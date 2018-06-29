@@ -1,5 +1,6 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import Vue from 'vue';
 import store from './store'
 Vue.config.errorHandler = function (err, vm, info, a) {

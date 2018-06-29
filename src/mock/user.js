@@ -1,4 +1,3 @@
-
 import Mock from 'mockjs'
 export const userInfo = {
     userInfo: {

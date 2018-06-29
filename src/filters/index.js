@@ -1,15 +1,17 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 function pluralize(time, label) {
   if (time === 1) {
     return time + label
   }
   return time + label + 's'
 }
+
 /**
  * 日期格式化
  */
-export function dateFormat(date) {
+export const formateDate = date => {
   let format = 'yyyy-MM-dd hh:mm:ss';
   if (date != 'Invalid Date') {
     let o = {
@@ -23,7 +25,7 @@ export function dateFormat(date) {
     }
     if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
       (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
+    for (let k in o)
       if (new RegExp("(" + k + ")").test(format))
         format = format.replace(RegExp.$1,
           RegExp.$1.length == 1 ? o[k] :
@@ -31,9 +33,9 @@ export function dateFormat(date) {
     return format;
   }
   return '';
-
 }
-export function timeAgo(time) {
+
+export const timeAgo = time => {
   const between = Date.now() / 1000 - Number(time)
   if (between < 3600) {
     return pluralize(~~(between / 60), ' minute')
@@ -44,7 +46,7 @@ export function timeAgo(time) {
   }
 }
 
-export function parseTime(time, cFormat) {
+export const parseTime = (time, cFormat) => {
   time = Date.parse(new Date(time));
   if (arguments.length === 0) {
     return null
@@ -81,7 +83,7 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
-export function formatTime(time, option) {
+export const formatTime = (time, option) => {
   time = +time * 1000
   const d = new Date(time)
   const now = Date.now()
@@ -105,14 +107,14 @@ export function formatTime(time, option) {
 }
 
 /* 数字 格式化*/
-export function nFormatter(num, digits) {
+export const formatNum = (num, digits) => {
   const si = [
-    { value: 1E18, symbol: 'E' },
-    { value: 1E15, symbol: 'P' },
-    { value: 1E12, symbol: 'T' },
-    { value: 1E9, symbol: 'G' },
-    { value: 1E6, symbol: 'M' },
-    { value: 1E3, symbol: 'k' }
+    {value: 1E18, symbol: 'E'},
+    {value: 1E15, symbol: 'P'},
+    {value: 1E12, symbol: 'T'},
+    {value: 1E9, symbol: 'G'},
+    {value: 1E6, symbol: 'M'},
+    {value: 1E3, symbol: 'k'}
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
@@ -122,13 +124,13 @@ export function nFormatter(num, digits) {
   return num.toString()
 }
 
-export function html2Text(val) {
+export const html2Text = val => {
   const div = document.createElement('div')
   div.innerHTML = val
   return div.textContent || div.innerText
 }
 
-export function toThousandslsFilter(num) {
+export const toThousandslsFilter = num => {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 

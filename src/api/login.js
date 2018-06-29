@@ -1,11 +1,12 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import {baseUrl, khglUrl, dicUrl} from '@/config/env'
 import request from '@/router/axios'
 import {userInfo, tableData} from '@/mock/user'
 import {menu, menuAll} from '@/mock/menu'
 
-export const loginByUsername = (username, password,) => {
+export const loginByUsername = (username, password, code, randomStr) => {
   let grant_type = 'password'
   let scope = 'server'
   return request({
@@ -14,7 +15,7 @@ export const loginByUsername = (username, password,) => {
       'Authorization': 'Basic Y2xpZW50XzI6MTIzNDU2=='
     },
     method: 'post',
-    params: {username, password, grant_type, scope}
+    params: {username, password, randomStr, code, grant_type, scope}
   })
 }
 
@@ -42,6 +43,12 @@ export const logout = (accesstoken, refreshToken) => {
   return request({
     url: '/authApi/authentication/removeToken',
     method: 'post',
+    headers: {
+      'Authorization': ''
+    },
     params: {accesstoken, refreshToken}
   })
 }
+
+
+

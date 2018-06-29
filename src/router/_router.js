@@ -1,7 +1,9 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 const _import = require('./_import');
 import Layout from '@/page/index/'
+
 export default [{
   path: '/',
   name: '主页',
@@ -44,10 +46,22 @@ export default [{
     path: 'user',
     name: '用户管理',
     component: _import('admin/user/index', 'views')
-  },{
+  }, {
     path: 'menu',
     name: '菜单管理',
     component: _import('admin/menu/index', 'views')
+  },{
+    path: 'role',
+    name: '角色管理',
+    component: _import('admin/role/index', 'views')
+  },{
+    path: 'department',
+    name: '部门管理',
+    component: _import('admin/dept/index', 'views')
+  },{
+    path: 'dictionary',
+    name: '字典管理',
+    component: _import('admin/dict/index', 'views')
   }]
 }, {
   path: '/404',

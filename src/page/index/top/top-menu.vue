@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="pull-auto top-menu">
     <el-menu :default-active="activeIndex" mode="horizontal">

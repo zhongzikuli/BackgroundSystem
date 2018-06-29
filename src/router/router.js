@@ -1,13 +1,15 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import {routerMode} from '@/config/env';
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import {routerMode} from '@/config/env'
-import store from '@/store'
-import {formatRoutes} from '@/util/util'
-import baseRouter from './_router'
+import Layout from '@/page/index/'
+import viewRouter from './_router'
 
-Vue.use(VueRouter)
-
+const _import = require('./_import');
+Vue.use(VueRouter);
 export default new VueRouter({
   // mode: 'history',
   strict: process.env.NODE_ENV !== 'production',
@@ -16,7 +18,7 @@ export default new VueRouter({
       return savedPosition
     } else {
       if (from.meta.keepAlive) {
-        from.meta.savedPosition = document.body.scrollTop
+        from.meta.savedPosition = document.body.scrollTop;
       }
       return {
         x: 0,
@@ -24,5 +26,27 @@ export default new VueRouter({
       }
     }
   },
-  routes: [].concat(...formatRoutes(store.state.user.menu), baseRouter)
-})
+});
+export const asyncRouterMap = [
+  {path: '/login', name: '登录页', component: _import('login/index')},
+  {path: '/lock', name: '锁屏页', component: _import('lock/index')},
+  {path: '*', redirect: '/404', hidden: true},
+  {path: '/404', component: _import('error-page/404', 'components'), name: '404'},
+  {path: '/403', component: _import('error-page/403', 'components'), name: '403'},
+  {path: '/500', component: _import('error-page/500', 'components'), name: '500'},
+  {
+    path: '/myiframe',
+    component: Layout,
+    redirect: '/myiframe',
+    meta: {keepAlive: true},
+    children: [
+      {
+        path: ":routerPath",
+        name: 'iframe',
+        component: _import('iframe/main', 'components'),
+        props: true
+      }
+    ]
+
+  }
+].concat(viewRouter)

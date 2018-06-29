@@ -1,5 +1,3 @@
-
-
 import {
   baseUrl
 } from '@/config/env'

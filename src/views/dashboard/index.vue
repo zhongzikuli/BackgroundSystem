@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">欢迎登录</div>

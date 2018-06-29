@@ -1,5 +1,3 @@
-
-
 <template>
   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
     <el-form-item prop="mobile">
@@ -105,6 +103,7 @@ export default {
           this.$store
             .dispatch("LoginByPhone", this.loginForm)
             .then(response => {
+              console.log(response);
               this.$store.commit("ADD_TAG", this.tagWel);
               this.$router.push({ path: this.tagWel.value });
             });

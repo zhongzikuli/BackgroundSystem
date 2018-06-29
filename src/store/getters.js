@@ -1,7 +1,8 @@
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 const getters = {
   tag: state => state.tags.tag,
-  website: state => state.common.website,
   theme: state => state.common.theme,
   isCollapse: state => state.common.isCollapse,
   isLock: state => state.common.isLock,

@@ -1,5 +1,3 @@
-
-
 <template>
     <div class="error500">
         <div class="error500-body-con">

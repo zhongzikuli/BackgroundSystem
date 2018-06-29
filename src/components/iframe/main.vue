@@ -1,5 +1,3 @@
-
-
 <template>
   <iframe v-if="$route.query.src" :src='$route.query.src' class="iframe" ref="iframe"></iframe>
   <iframe v-else :src="urlPath" class="iframe" ref="iframe"></iframe>
@@ -21,6 +19,7 @@ export default {
   },
   mounted() {
     this.load();
+    this.resize();
   },
   props: ["routerPath"],
   watch: {
@@ -55,7 +54,6 @@ export default {
     },
     // 加载组件
     load() {
-      this.resize();
       this.show();
       this.$route.query.src = this.$route.query.src
         ? this.$route.query.src.replace("$", "#")
@@ -74,9 +72,6 @@ export default {
     //iframe窗口初始化
     iframeInit() {
       const iframe = this.$refs.iframe;
-      if (!iframe) {
-        return;
-      }
       const clientHeight = document.documentElement.clientHeight - 120;
       iframe.style.height = `${clientHeight}px`;
       if (iframe.attachEvent) {

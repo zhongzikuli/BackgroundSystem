@@ -1,5 +1,6 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 const vueSticky = {}
 let listenAction
 vueSticky.install = Vue => {
@@ -12,12 +13,12 @@ vueSticky.install = Vue => {
 
       elStyle.position = '-webkit-sticky'
       elStyle.position = 'sticky'
-        // if the browser support css sticky（Currently Safari, Firefox and Chrome Canary）
-        // if (~elStyle.position.indexOf('sticky')) {
-        //     elStyle.top = `${stickyTop}px`;
-        //     elStyle.zIndex = zIndex;
-        //     return
-        // }
+      // if the browser support css sticky（Currently Safari, Firefox and Chrome Canary）
+      // if (~elStyle.position.indexOf('sticky')) {
+      //     elStyle.top = `${stickyTop}px`;
+      //     elStyle.zIndex = zIndex;
+      //     return
+      // }
       const elHeight = el.getBoundingClientRect().height
       const elWidth = el.getBoundingClientRect().width
       elStyle.cssText = `top: ${stickyTop}px; z-index: ${zIndex}`

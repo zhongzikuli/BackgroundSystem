@@ -1,5 +1,6 @@
-
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import request from '@/router/axios'
 
 export function fetchList(query) {
@@ -12,7 +13,7 @@ export function fetchList(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/admin/dict/',
+    url: '/admin/user/',
     method: 'post',
     data: obj
   })
@@ -20,7 +21,7 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/admin/dict/' + id,
+    url: '/admin/user/' + id,
     method: 'get'
   })
 }
@@ -34,7 +35,7 @@ export function delObj(row) {
 
 export function putObj(obj) {
   return request({
-    url: '/admin/dict/',
+    url: '/admin/user/',
     method: 'put',
     data: obj
   })

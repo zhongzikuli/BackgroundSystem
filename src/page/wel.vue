@@ -1,32 +1,26 @@
-
-
 <template>
   <div class="pull-chheight wel-contailer">
     <div class="banner-text">
-      <h2>{{website.wel.title}}</h2>
+      <h2>浩韵GPS系统</h2>
       <span :class="['actor',{typeing:isText}]">{{text}}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import DATA from "@/const/wel";
 export default {
   name: "wel",
   data() {
     return {
-      DATA: [],
+      DATA: DATA,
       text: "",
       actor: "",
       count: 0,
       isText: false
     };
   },
-  computed: {
-    ...mapGetters(["website"])
-  },
   created() {
-    this.DATA = this.website.wel.list;
     this.actor = this.DATA[this.count] || "";
     setTimeout(() => {
       this.isText = true;

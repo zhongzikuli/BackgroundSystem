@@ -1,5 +1,3 @@
-
-
 <template>
     <div class="error403">
         <div class="error403-body-con">

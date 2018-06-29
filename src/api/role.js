@@ -1,4 +1,6 @@
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import request from '@/router/axios'
 
 export function roleList() {
@@ -18,7 +20,7 @@ export function fetchList(query) {
 
 export function deptRoleList(deptId) {
   return request({
-    url: '/admin/role/roleList/' + deptId,
+    url: '/api/userservice/role/roleList/' + deptId,
     method: 'get'
   })
 }
@@ -66,7 +68,7 @@ export function permissionUpd(roleId, menuIds) {
 
 export function fetchRoleTree(roleName) {
   return request({
-    url: '/admin/menu/roleTree/' + roleName,
+    url: '/api/userservice/menu/roleTree/' + roleName,
     method: 'get'
   })
 }

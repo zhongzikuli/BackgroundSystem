@@ -1,63 +1,48 @@
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import router from './router/router'
 import store from './store'
 import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css' // progress bar style
-import {
-  getToken
-} from '@/util/auth'
-import {
-  setTitle
-} from '@/util/util'
-import {
-  validatenull
-} from '@/util/validate'
+import 'nprogress/nprogress.css'// progress bar style
+import {getToken} from '@/util/auth'
+import {setTitle} from '@/util/util';
+import {validatenull} from '@/util/validate';
+import {asyncRouterMap} from '@/router/router'
 
-// NProgress Configuration
-NProgress.configure({
-  showSpinner: false
-})
-
-function hasPermission(roles, permissionRoles) {
-  if (!permissionRoles) return true
-  return roles.some(role => permissionRoles.indexOf(role) >= 0)
-}
+NProgress.configure({showSpinner: false})// NProgress Configuration
 
 const whiteList = ['/login', '/404', '/401', '/lock']
 const lockPage = '/lock'
-
+router.addRoutes(asyncRouterMap); // 动态添加可访问路由表
 router.beforeEach((to, from, next) => {
-  NProgress.start()
-  const value = to.query.src ? to.query.src : to.path
-  const label = to.query.name ? to.query.name : to.name
-  if (whiteList.indexOf(value) === -1) {
+  NProgress.start() // start progress bar
+  const value = to.query.src ? to.query.src : to.path;
+  const label = to.query.name ? to.query.name : to.name;
+  if (whiteList.indexOf(value) == -1) {
     store.commit('ADD_TAG', {
       label: label,
       value: value,
       query: to.query
-    })
+    });
   }
   if (store.getters.access_token) { // determine if there has token
-    if (store.getters.isLock && to.path !== lockPage) {
-      next({
-        path: lockPage
-      })
-      NProgress.done()
+    /* has token*/
+    if (store.getters.isLock && to.path != lockPage) {
+      next({path: lockPage})
+      NProgress.done();
     } else if (to.path === '/login') {
-      next({
-        path: '/'
-      })
-      NProgress.done()
+      next({path: '/'})
+      NProgress.done();
     } else {
       if (store.getters.roles.length === 0) {
         store.dispatch('GetUserInfo').then(res => {
+          const roles = res.roles
           next({...to, replace: true})
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
-            next({
-              path: '/login'
-            })
-            NProgress.done()
+            next({path: '/login'})
+            NProgress.done();
           })
         })
       } else {
@@ -70,17 +55,17 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next('/login')
-      NProgress.done()
+      NProgress.done();
     }
   }
 })
 
-// 寻找子菜单的父类
+//寻找子菜单的父类
 function findMenuParent(tag) {
-  let tagCurrent = []
-  const menu = store.getters.menu
-  tagCurrent.push(tag)
-  return tagCurrent
+  let tagCurrent = [];
+  const menu = store.getters.menu;
+  tagCurrent.push(tag);
+  return tagCurrent;
   // //如果是一级菜单直接返回
   // for (let i = 0, j = menu.length; i < j; i++) {
   //     if (menu[i].href == tag.value) {
@@ -112,13 +97,14 @@ function findMenuParent(tag) {
   // });
   // tagCurrent.push(tag);
   // return tagCurrent;
+
 }
 
 router.afterEach((to, from) => {
-  NProgress.done()
+  NProgress.done();
   setTimeout(() => {
-    const tag = store.getters.tag
-    setTitle(tag.label)
-    store.commit('SET_TAG_CURRENT', findMenuParent(tag))
-  }, 0)
+    const tag = store.getters.tag;
+    setTitle(tag.label);
+    store.commit('SET_TAG_CURRENT', findMenuParent(tag));
+  }, 0);
 })

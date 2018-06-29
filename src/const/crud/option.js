@@ -1,5 +1,3 @@
-
-
 export const tableOption = {
   "border": true,
   "index": true,

@@ -1,5 +1,3 @@
-
-
 <template>
    <div class="third-container">
      <img :src="qqCode" class="third-icon qq"  />

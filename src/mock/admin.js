@@ -1,6 +1,5 @@
-
 import Mock from 'mockjs'
-import { dateFormat } from '@/filters/'
+import { formateDate } from '@/filters/'
 let userList = []
 for (let i = 0; i < 2; i++) {
     userList.push(Mock.mock({
@@ -9,7 +8,7 @@ for (let i = 0; i < 2; i++) {
         username: Mock.mock('@last'),
         grade: [0, 1],
         state: 0,
-        date: dateFormat(new Date()),
+        date: formateDate(new Date()),
     }))
 }
 export const userTableData = {
@@ -24,7 +23,7 @@ for (let i = 0; i < 2; i++) {
     roleList.push(Mock.mock({
         id: '@increment',
         name: Mock.mock('@cname'),
-        date: dateFormat(new Date()),
+        date: formateDate(new Date()),
         check: [1, 3, 5]
     }))
 }

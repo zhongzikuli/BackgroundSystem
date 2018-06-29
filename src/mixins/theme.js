@@ -1,8 +1,8 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
+import {mapGetters} from "vuex";
 
-
-import {
-  mapGetters
-} from "vuex";
 const version = require("element-ui/package.json").version; // element-ui version from node_modules
 const ORIGINAL_THEME = "#409EFF"; // default color
 export default function () {

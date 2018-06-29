@@ -1,5 +1,3 @@
-
-
 import './waves.css'
 
 export default{

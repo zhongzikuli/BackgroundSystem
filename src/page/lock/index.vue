@@ -1,4 +1,3 @@
-
 <template>
   <div class="lock-container pull-height">
     <div class="lock-form animated bounceInDown">

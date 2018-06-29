@@ -1,16 +1,13 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
+import {validatenull} from '@/util/validate'
 
-
-import { validatenull } from '@/util/validate'
 /**
  * 存储localStorage
  */
 export const setStore = (params) => {
-  const {
-    name,
-    content,
-    type,
-    datetime
-  } = params
+  const {name, content, type, datetime} = params
   const obj = {
     dataType: typeof (content),
     content: content,
@@ -24,10 +21,7 @@ export const setStore = (params) => {
  * 获取localStorage
  */
 export const getStore = (params) => {
-  const {
-    name,
-    type
-  } = params
+  const {name, type} = params
   let obj = {}
   let content
   obj = window.localStorage.getItem(name)
@@ -49,9 +43,7 @@ export const getStore = (params) => {
  * 删除localStorage
  */
 export const removeStore = params => {
-  let {
-    name
-  } = params
+  let {name} = params
   window.localStorage.removeItem(name)
   window.sessionStorage.removeItem(name)
 }

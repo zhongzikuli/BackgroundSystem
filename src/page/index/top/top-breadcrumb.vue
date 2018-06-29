@@ -1,4 +1,3 @@
-
 <template>
     <el-breadcrumb separator="/" class="tags-breadcrumb-list">
         <template v-for="(item,index) in tagCurrent">

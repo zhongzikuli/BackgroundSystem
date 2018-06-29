@@ -1,5 +1,3 @@
-
-
 import Clipboard from './clipboard'
 
 const install = function(Vue) {

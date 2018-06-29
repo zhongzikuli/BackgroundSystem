@@ -1,4 +1,6 @@
-
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
