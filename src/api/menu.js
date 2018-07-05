@@ -5,14 +5,14 @@ import request from '@/router/axios'
 
 export const GetMenu = () => {
   return request({
-    url: '/userApi/menu/getUserTree',
+    url: '/userservice/menu/getUserTree',
     method: 'get'
   })
 }
 
 export const fetchTree = query => {
   return request({
-    url: '/userApi/menu/tree',
+    url: '/userservice/menu/tree',
     method: 'get',
     params: query
   })
@@ -34,7 +34,7 @@ export const fetchUserTree = () => {
 
 export function addObj(obj) {
   return request({
-    url: '/userApi/menu/',
+    url: '/userservice/menu/add',
     method: 'post',
     data: obj
   })
@@ -42,21 +42,21 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/userApi/menu/' + id,
+    url: '/userservice/menu/' + id,
     method: 'get'
   })
 }
 
 export function delObj(id) {
   return request({
-    url: '/userApi/menu/' + id,
+    url: '/userservice/menu/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/userApi/menu/',
+    url: '/userservice/menu/update',
     method: 'put',
     data: obj
   })

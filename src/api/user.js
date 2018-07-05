@@ -5,7 +5,7 @@ import request from '@/router/axios'
 
 export const fetchList = query => {
   return request({
-    url: '/userApi/user/userPage',
+    url: '/userservice/user/userPage',
     method: 'get',
     params: query
   })
@@ -13,7 +13,7 @@ export const fetchList = query => {
 
 export const addObj = obj => {
   return request({
-    url: '/userApi/user/',
+    url: '/userservice/user/add',
     method: 'post',
     data: obj
   })
@@ -21,21 +21,21 @@ export const addObj = obj => {
 
 export const getObj = id => {
   return request({
-    url: '/api/v1/user/' + id,
+    url: '/userservice/user/' + id,
     method: 'get'
   })
 }
 
 export const delObj = id => {
   return request({
-    url: '/userApi/user/' + id,
+    url: '/userservice/user/' + id,
     method: 'delete'
   })
 }
 
 export const putObj = obj => {
   return request({
-    url: '/userApi/user',
+    url: '/userservice/user',
     method: 'put',
     data: obj
   })

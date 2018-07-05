@@ -55,11 +55,11 @@ export default [{
     name: '角色管理',
     component: _import('admin/role/index', 'views')
   },{
-    path: 'department',
+    path: 'dept',
     name: '部门管理',
     component: _import('admin/dept/index', 'views')
   },{
-    path: 'dictionary',
+    path: 'dict',
     name: '字典管理',
     component: _import('admin/dict/index', 'views')
   }]

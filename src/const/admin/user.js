@@ -22,7 +22,7 @@ export const userOption = {
   },
     {
       label: "角色",
-      prop: "grade",
+      prop: "role",
       type: "checkbox",
       dicData: 'GRADE'
     },
@@ -34,8 +34,8 @@ export const userOption = {
       valueFormat: "yyyy-MM-dd HH:mm:ss",
     },
     {
-      label: "内容",
-      prop: "ueditor",
+      label: "用户等级",
+      prop: "level",
       type: "ueditor",
       hide: true,
       formHeight: 180,

@@ -5,14 +5,14 @@ import request from '@/router/axios'
 
 export function roleList() {
   return request({
-    url: '/admin/role/roleList',
+    url: '/userservice/role/roleList',
     method: 'get'
   })
 }
 
 export function fetchList(query) {
   return request({
-    url: '/admin/role/rolePage',
+    url: '/userservice/role/rolePage',
     method: 'get',
     params: query
   })
@@ -20,21 +20,21 @@ export function fetchList(query) {
 
 export function deptRoleList(deptId) {
   return request({
-    url: '/api/userservice/role/roleList/' + deptId,
+    url: '/userservice/role/roleList/' + deptId,
     method: 'get'
   })
 }
 
 export function getObj(id) {
   return request({
-    url: '/admin/role/' + id,
+    url: '/userservice/role/' + id,
     method: 'get'
   })
 }
 
 export function addObj(obj) {
   return request({
-    url: '/admin/role/',
+    url: '/userservice/role/',
     method: 'post',
     data: obj
   })
@@ -42,7 +42,7 @@ export function addObj(obj) {
 
 export function putObj(obj) {
   return request({
-    url: '/admin/role/',
+    url: '/userservice/role/',
     method: 'put',
     data: obj
   })
@@ -50,14 +50,14 @@ export function putObj(obj) {
 
 export function delObj(id) {
   return request({
-    url: '/admin/role/' + id,
+    url: '/userservice/role/' + id,
     method: 'delete'
   })
 }
 
 export function permissionUpd(roleId, menuIds) {
   return request({
-    url: '/admin/role/roleMenuUpd',
+    url: '/userservice/role/roleMenuUpd',
     method: 'put',
     params: {
       roleId: roleId,
@@ -66,16 +66,16 @@ export function permissionUpd(roleId, menuIds) {
   })
 }
 
-export function fetchRoleTree(roleName) {
+export function fetchRoleTree(roleId) {
   return request({
-    url: '/api/userservice/menu/roleTree/' + roleName,
+    url: '/userservice/menu/roleTree/' + roleId,
     method: 'get'
   })
 }
 
 export function fetchDeptTree(query) {
   return request({
-    url: '/admin/dept/tree',
+    url: '/userservice/dept/tree',
     method: 'get',
     params: query
   })

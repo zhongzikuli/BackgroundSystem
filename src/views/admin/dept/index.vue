@@ -25,17 +25,33 @@
       <el-col :span="16" style='margin-top:15px;'>
         <el-card class="box-card">
           <el-form :label-position="labelPosition" label-width="80px" :model="form" ref="form">
-            <el-form-item label="父级节点" prop="parentId">
-              <el-input v-model="form.parentId" :disabled="formEdit" placeholder="请输入父级节点"></el-input>
+            <div class="hidden">
+              <el-input v-model="form.id"></el-input>
+              <el-input v-model="form.parentId"></el-input>
+            </div>
+            <el-form-item label="部门名称" prop="deptName">
+              <el-input v-model="form.deptName" :disabled="formEdit"  placeholder="请输入名称"></el-input>
             </el-form-item>
-            <el-form-item label="节点编号" prop="parentId" v-if="formEdit">
-              <el-input v-model="form.deptId" :disabled="formEdit" placeholder="节点编号"></el-input>
+            <el-form-item label="部门简称" prop="deptShortName">
+              <el-input v-model="form.deptShortName" :disabled="formEdit"  placeholder="请输入简称"></el-input>
             </el-form-item>
-            <el-form-item label="部门名称" prop="name">
-              <el-input v-model="form.name" :disabled="formEdit"  placeholder="请输入名称"></el-input>
+            <el-form-item label="联系人" prop="deptContact">
+              <el-input v-model="form.deptContact" :disabled="formEdit"  placeholder="请输入联系人"></el-input>
             </el-form-item>
-            <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" :disabled="formEdit" placeholder="请输入排序"></el-input>
+            <el-form-item label="类型" prop="deptType">
+              <el-select class="filter-item" v-model="form.deptType" :disabled="formEdit" placeholder="请输入类型">
+                <el-option v-for="item in  deptTypeOptions" :key="item" :label="item | deptTypeFilter"
+                           :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="排序" prop="deptSort">
+              <el-input v-model="form.deptSort" :disabled="formEdit" placeholder="请输入排序"></el-input>
+            </el-form-item>
+            <el-form-item label="是否可用" prop="isEnabled">
+              <el-select class="filter-item" v-model="form.isEnabled" :disabled="formEdit" placeholder="请输入是否可用">
+                <el-option v-for="item in  typeOptions" :key="item" :label="item | enabledFilter"
+                           :value="item"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item v-if="formStatus == 'update'">
               <el-button type="primary" @click="update">更新</el-button>
@@ -56,7 +72,7 @@
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/dept'
   import { mapGetters } from 'vuex'
   export default {
-    name: 'menu',
+    name: 'dept',
     data() {
       return {
         list: null,
@@ -65,7 +81,8 @@
         formAdd: true,
         formStatus: '',
         showElement: false,
-        typeOptions: ['0', '1'],
+        typeOptions: [0, 1],
+        deptTypeOptions: [0,1],
         methodOptions: ['GET', 'POST', 'PUT', 'DELETE'],
         listQuery: {
           name: undefined
@@ -77,10 +94,13 @@
         },
         labelPosition: 'right',
         form: {
-          name: undefined,
-          orderNum: undefined,
+          deptName: undefined,
+          deptShortName: undefined,
+          deptContact: undefined,
+          deptSort: undefined,
           parentId: undefined,
-          deptId: undefined
+          isEnabled: undefined,
+          id: undefined
         },
         currentId: 0,
         deptManager_btn_add: false,
@@ -89,10 +109,17 @@
       }
     },
     filters: {
-      typeFilter(type) {
+      enabledFilter(type) {
         const typeMap = {
-          0: '菜单',
-          1: '按钮'
+          0: '可用',
+          1: '不可用'
+        }
+        return typeMap[type]
+      },
+      deptTypeFilter(type) {
+        const typeMap = {
+          0: '部门',
+          1: '公司'
         }
         return typeMap[type]
       }
@@ -187,16 +214,13 @@
       },
       resetForm() {
         this.form = {
-          permission: undefined,
-          name: undefined,
-          menuId: undefined,
           parentId: this.currentId,
-          url: undefined,
-          icon: undefined,
-          sort: undefined,
-          component: undefined,
-          type: undefined,
-          method: undefined
+          deptName: undefined,
+          deptShortName: undefined,
+          deptContact: undefined,
+          isEnabled: undefined,
+          id: undefined,
+          deptSort: undefined
         }
       }
     }

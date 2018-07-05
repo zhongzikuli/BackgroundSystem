@@ -10,7 +10,7 @@ export const loginByUsername = (username, password, code, randomStr) => {
   let grant_type = 'password'
   let scope = 'server'
   return request({
-    url: '/authApi/oauth/token',
+    url: '/authservice/oauth/token',
     headers: {
       'Authorization': 'Basic Y2xpZW50XzI6MTIzNDU2=='
     },
@@ -34,14 +34,14 @@ export function mobileLogin(mobile, code) {
 
 export const getUserInfo = () => {
   return request({
-    url: '/userApi/user/getUserInfo',
+    url: '/userservice/user/getUserInfo',
     method: 'get'
   })
 }
 
 export const logout = (accesstoken, refreshToken) => {
   return request({
-    url: '/authApi/authentication/removeToken',
+    url: '/authservice/authentication/removeToken',
     method: 'post',
     headers: {
       'Authorization': ''

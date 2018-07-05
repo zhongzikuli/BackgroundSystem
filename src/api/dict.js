@@ -3,9 +3,10 @@
  */
 import request from '@/router/axios'
 
-export function fetchList(query) {
+
+export function fetchTree(query) {
   return request({
-    url: '/admin/dict/dictPage',
+    url: '/userservice/dict/tree',
     method: 'get',
     params: query
   })
@@ -13,7 +14,7 @@ export function fetchList(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/admin/user/',
+    url: '/userservice/dict/add',
     method: 'post',
     data: obj
   })
@@ -21,29 +22,39 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/admin/user/' + id,
+    url: '/userservice/dict/' + id,
     method: 'get'
   })
 }
 
-export function delObj(row) {
+export function delObj(id) {
   return request({
-    url: '/admin/dict/' + row.id + '/' + row.type,
+    url: '/userservice/dict/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/admin/user/',
+    url: '/userservice/dict/update',
     method: 'put',
     data: obj
   })
 }
 
+
+export function fetchList(query) {
+  return request({
+    url: '/userservice/dict/tree',
+    method: 'get',
+    params: query
+  })
+}
+
 export function remote(type) {
   return request({
-    url: '/admin/dict/type/' + type,
+    url: '/userservice/dict/type/' + type,
     method: 'get'
   })
 }
+
