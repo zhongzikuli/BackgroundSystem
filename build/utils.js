@@ -5,9 +5,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 
 exports.assetsPath = function (_path) {
-  const assetsSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.assetsSubDirectory
-    : config.dev.assetsSubDirectory
+  let assetsSubDirectory
+  if (process.env.NODE_ENV === 'development') {
+    assetsSubDirectory = config.dev.assetsSubDirectory
+  } else if (process.env.NODE_ENV === 'test') {
+    assetsSubDirectory = config.test.assetsSubDirectory
+  } else {
+    assetsSubDirectory = config.build.assetsSubDirectory
+  }
 
   return path.posix.join(assetsSubDirectory, _path)
 }
@@ -59,7 +64,7 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    sass: generateLoaders('sass', {indentedSyntax: true}),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')

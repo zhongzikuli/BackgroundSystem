@@ -4,7 +4,6 @@
 import { validatenull } from './validate'
 import { baseUrl } from '@/config/env'
 
-
 /**
  * 加密处理
  */
@@ -120,7 +119,6 @@ export const findParent = (menu, id) => {
  * 总体路由处理器
  */
 export const resolveUrlPath = (url, name) => {
-
     let reqUrl = url;
     if (url.indexOf("#") != -1 && url.indexOf("http") == -1) {
         const port = reqUrl.substr(reqUrl.indexOf(':'));

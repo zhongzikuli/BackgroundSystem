@@ -1,20 +1,9 @@
 /**
  * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
  */
-import {
-  setStore,
-  getStore,
-  removeStore
-} from '@/util/store'
-import {
-  validatenull
-} from '@/util/validate'
-import {
-  getDic
-} from '@/api/admin'
-import {
-  baseUrl
-} from '@/config/env';
+import {setStore, getStore, removeStore} from '@/util/store'
+import {validatenull} from '@/util/validate'
+import {getDic} from '@/api/admin'
 
 const common = {
 

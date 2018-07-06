@@ -91,9 +91,9 @@
       refreshCode() {
         this.loginForm.code = "";
         this.loginForm.randomStr = randomLenNum(this.code.len, true);
-        this.code.type == "text"
-          ? (this.code.value = randomLenNum(this.code.len))
-          : (this.code.src = `${this.codeUrl}/${this.loginForm.randomStr}`);
+        this.code.type == "text" ?
+          (this.code.value = randomLenNum(this.code.len)) :
+          (this.code.src = `${this.codeUrl}/${this.loginForm.randomStr}`);
       },
       showPassword() {
         this.passwordType == ""

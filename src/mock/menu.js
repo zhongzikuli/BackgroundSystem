@@ -1,6 +1,3 @@
-import {
-  baseUrl
-} from '@/config/env'
 export const menu = [{
   id: 1,
   label: "首页",

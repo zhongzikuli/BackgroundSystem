@@ -13,11 +13,15 @@ import errorCode from '@/const/errorCode'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 
+import {baseUrl} from '@/config/env'
 //超时时间
 axios.defaults.timeout = 30000;
-axios.defaults.baseURL = process.env.BASE_API;
-axios.defaults.withCredentials = true; //跨域请求，允许保存cookie
-NProgress.configure({showSpinner: false});// NProgress Configuration
+axios.defaults.baseURL = baseUrl;
+//跨域请求，允许保存cookie
+axios.defaults.withCredentials = true;
+NProgress.configure({showSpinner: false})// NProgress Configuration
+
+let msg;
 
 //HTTPrequest拦截
 axios.interceptors.request.use(config => {

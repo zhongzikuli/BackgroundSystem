@@ -10,20 +10,19 @@
  *
  */
 
-
 let baseUrl = '';
 let iconfontVersion = ['567566_r22zi6t8noas8aor', '599693_c3ju5pfa6altmx6r'];
 let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
-let codeUrl = `/authservice/authentication/code`
+let codeUrl = ''
 if (process.env.NODE_ENV == 'development') {
-  baseUrl = `http://127.0.0.1:5555/`;
-} else if (process.env.NODE_ENV == 'production') {
-  baseUrl = `http://218.70.11.118`;
+  baseUrl = `http://192.168.0.109:5555/api/v1/`;
+  codeUrl = `/authservice/authentication/code`
+} else if (process.env.NODE_ENV == 'test') {
+  baseUrl = `http://192.168.0.109:5555/api/v1/`;
+  codeUrl = `${baseUrl}authservice/authentication/code`
+} else {
+  baseUrl = `http://192.168.0.109:5555/api/v1/`;
+  codeUrl = `${baseUrl}authservice/authentication/code`
 }
 
-export {
-  baseUrl,
-  iconfontUrl,
-  iconfontVersion,
-  codeUrl
-}
+export {baseUrl, iconfontUrl, iconfontVersion, codeUrl}
