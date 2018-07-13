@@ -6,13 +6,12 @@ import {validatenull} from '@/util/validate'
 import {getDic} from '@/api/admin'
 
 const common = {
-
   state: {
     isCollapse: false,
     isFullScren: false,
     isLock: getStore({name: 'isLock'}) || false,
     theme: getStore({name: 'theme'}) || '#409EFF',
-    lockPasswd: getStore({name: 'lockPasswd'}) || '',
+    lockPasswd: getStore({name: 'lockPasswd'}) || 'admin',
   },
   actions: {
     //获取字典公用类

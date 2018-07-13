@@ -1,230 +1,231 @@
-<template>
+`<template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-button v-if="sys_dict_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加
-      </el-button>
+      <el-button-group>
+        <el-button type="primary" v-if="dictManager_btn_add" icon="plus" @click="handlerAdd">添加</el-button>
+        <el-button type="primary" v-if="dictManager_btn_edit" icon="edit" @click="handlerEdit">编辑</el-button>
+        <el-button type="primary" v-if="dictManager_btn_del" icon="delete" @click="handleDelete">删除</el-button>
+      </el-button-group>
     </div>
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 99%">
-      <el-table-column align="center" label="编号">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="数据值">
-        <template slot-scope="scope">
-          <span>{{ scope.row.value }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="标签名">
-        <template slot-scope="scope">
-          <span>{{ scope.row.label }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="类型">
-        <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="描述">
-        <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="排序">
-        <template slot-scope="scope">
-          <span>{{ scope.row.sort }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="备注信息">
-        <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="sys_dict_upd" size="small" type="success" @click="handleUpdate(scope.row)">编辑
-          </el-button>
-          <el-button v-if="sys_dict_del" size="mini" type="danger" @click="handleDelete(scope.row)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div v-show="!listLoading" class="pagination-container">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-form-item label="编号" prop="username">
-          <el-input v-model="form.id" placeholder="编号"></el-input>
-        </el-form-item>
-        <el-form-item label="数据值" prop="username">
-          <el-input v-model="form.value" placeholder="数据值"></el-input>
-        </el-form-item>
-        <el-form-item label="标签名" prop="username">
-          <el-input v-model="form.label" placeholder="标签名"></el-input>
-        </el-form-item>
-        <el-form-item label="类型" prop="username">
-          <el-input v-model="form.type" placeholder="类型"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="username">
-          <el-input v-model="form.description" placeholder="描述"></el-input>
-        </el-form-item>
-        <el-form-item label="排序（升序）" prop="username">
-          <el-input v-model="form.sort" placeholder="排序（升序）"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间" prop="username">
-          <el-input v-model="form.createTime" placeholder="创建时间"></el-input>
-        </el-form-item>
-        <el-form-item label="备注信息" prop="username">
-          <el-input v-model="form.remarks" placeholder="备注信息"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel('form')">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-        <el-button v-else type="primary" @click="update('form')">修 改</el-button>
-      </div>
-    </el-dialog>
+
+    <el-row>
+      <el-col :span="8" style='margin-top:15px;'>
+        <el-tree
+          class="filter-tree"
+          :data="treeData"
+          node-key="id"
+          highlight-current
+          :props="defaultProps"
+          :filter-node-method="filterNode"
+          @node-click="getNodeData"
+          default-expand-all
+        >
+        </el-tree>
+      </el-col>
+      <el-col :span="16" style='margin-top:15px;'>
+        <el-card class="box-card">
+          <el-form :label-position="labelPosition" label-width="100px" :model="form" ref="form">
+            <div class="hidden">
+              <el-input v-model="form.id"></el-input>
+              <el-input v-model="form.parentId"></el-input>
+            </div>
+            <el-form-item label="字典关键字" prop="keyworld">
+              <el-input v-model="form.keyworld" :disabled="formEdit"  placeholder="请输入名称"></el-input>
+            </el-form-item>
+            <el-form-item label="字典描述" prop="valueDesc">
+              <el-input v-model="form.valueDesc" :disabled="formEdit"  placeholder="请输入描述"></el-input>
+            </el-form-item>
+            <el-form-item label="字典类型" prop="classLevel">
+              <el-select class="filter-item" v-model="form.classLevel" :disabled="formEdit" placeholder="请输入类型">
+                <el-option v-for="item in  classLevelOptions" :key="item" :label="item | classLevelFilter"
+                           :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+             <el-form-item label="字典类别" prop="classType">
+              <el-input v-model="form.classType" :disabled="formEdit"  placeholder="请输入类别"></el-input>
+            </el-form-item>
+            <el-form-item label="排序" prop="classOrder">
+              <el-input v-model="form.classOrder" :disabled="formEdit" placeholder="请输入排序"></el-input>
+            </el-form-item>
+            <el-form-item label="是否可用" prop="isDeleted">
+              <el-select class="filter-item" v-model="form.isDeleted" :disabled="formEdit" placeholder="请输入是否可用">
+                <el-option v-for="item in  typeOptions" :key="item" :label="item | enabledFilter"
+                           :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="formStatus == 'update'">
+              <el-button type="primary" @click="update">更新</el-button>
+              <el-button @click="onCancel">取消</el-button>
+            </el-form-item>
+            <el-form-item v-if="formStatus == 'create'">
+              <el-button type="primary" @click="create">保存</el-button>
+              <el-button @click="onCancel">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { fetchList, addObj, putObj, delObj } from "@/api/dict";
-import waves from "@/directive/waves/index.js"; // 水波纹指令
-import { mapGetters } from "vuex";
-
-export default {
-  name: "table_sys_dict",
-  directives: {
-    waves
-  },
-  data() {
-    return {
-      list: null,
-      total: null,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20
-      },
-      rules: {},
-      form: {},
-      dialogFormVisible: false,
-      dialogStatus: "",
-      sys_dict_add: false,
-      sys_dict_upd: false,
-      sys_dict_del: false,
-      textMap: {
-        update: "编辑",
-        create: "创建"
-      },
-      tableKey: 0
-    };
-  },
-  computed: {
-    ...mapGetters(["permissions"])
-  },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        0: "有效",
-        1: "无效"
-      };
-      return statusMap[status];
-    }
-  },
-  created() {
-    this.getList();
-    this.sys_dict_add = this.permissions["sys_dict_add"];
-    this.sys_dict_upd = this.permissions["sys_dict_upd"];
-    this.sys_dict_del = this.permissions["sys_dict_del"];
-  },
-  methods: {
-    getList() {
-      this.listLoading = true;
-      this.listQuery.orderByField = "gmt_create";
-      this.listQuery.isAsc = false;
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.records;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
+  import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/dict'
+  import { mapGetters } from 'vuex'
+  export default {
+    name: 'dict',
+    data() {
+      return {
+        list: null,
+        total: null,
+        formEdit: true,
+        formAdd: true,
+        formStatus: '',
+        showElement: false,
+        typeOptions: [0, 1],
+        classLevelOptions: [0,1],
+        methodOptions: ['GET', 'POST', 'PUT', 'DELETE'],
+        listQuery: {
+          name: undefined
+        },
+        treeData: [],
+        defaultProps: {
+          children: 'children',
+          label: 'valueDesc'
+        },
+        labelPosition: 'right',
+        form: {
+          keyworld: undefined,
+          valueDesc: undefined,
+          classLevel: undefined,
+          classType: undefined,
+          classOrder: undefined,
+          parentId: undefined,
+          isDeleted: undefined,
+          id: undefined
+        },
+        currentId: 0,
+        dictManager_btn_add: false,
+        dictManager_btn_edit: false,
+        dictManager_btn_del: false
+      }
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val;
-      this.getList();
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val;
-      this.getList();
-    },
-    handleDelete(row) {
-      delObj(row).then(response => {
-        this.dialogFormVisible = false;
-        this.getList();
-        this.$notify({
-          title: "成功",
-          message: "删除成功",
-          type: "success",
-          duration: 2000
-        });
-      });
-    },
-    handleCreate() {
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
-    },
-    create(formName) {
-      const set = this.$refs;
-      set[formName].validate(valid => {
-        if (valid) {
-          addObj(this.form).then(() => {
-            this.dialogFormVisible = false;
-            this.getList();
-            this.$notify({
-              title: "成功",
-              message: "创建成功",
-              type: "success",
-              duration: 2000
-            });
-          });
-        } else {
-          return false;
+    filters: {
+      enabledFilter(type) {
+        const typeMap = {
+          0: '可用',
+          1: '不可用'
         }
-      });
-    },
-    cancel(formName) {
-      this.dialogFormVisible = false;
-      const set = this.$refs;
-      set[formName].resetFields();
-    },
-    update(formName) {
-      const set = this.$refs;
-      set[formName].validate(valid => {
-        if (valid) {
-          this.dialogFormVisible = false;
-          this.form.password = undefined;
-          putObj(this.form).then(() => {
-            this.dialogFormVisible = false;
-            this.getList();
-            this.$notify({
-              title: "成功",
-              message: "修改成功",
-              type: "success",
-              duration: 2000
-            });
-          });
-        } else {
-          return false;
+        return typeMap[type]
+      },
+      classLevelFilter(type) {
+        const typeMap = {
+          0: '父级类型',
+          1: '子级类型'
         }
-      });
+        return typeMap[type]
+      }
+    },
+    created() {
+      this.getList()
+      this.dictManager_btn_add = this.permissions['sys_dict_add']
+      this.dictManager_btn_edit = this.permissions['sys_dict_edit']
+      this.dictManager_btn_del = this.permissions['sys_dict_del']
+    },
+    computed: {
+      ...mapGetters([
+        'elements',
+        'permissions'
+      ])
+    },
+    methods: {
+      getList() {
+        fetchTree(this.listQuery).then(response => {
+          this.treeData = response.data
+        })
+      },
+      filterNode(value, data) {
+        if (!value) return true
+        return data.label.indexOf(value) !== -1
+      },
+      getNodeData(data) {
+        if (!this.formEdit) {
+          this.formStatus = 'update'
+        }
+        getObj(data.id).then(response => {
+          this.form = response.data
+        })
+        this.currentId = data.id
+        this.showElement = true
+      },
+      handlerEdit() {
+        if (this.form.id) {
+          this.formEdit = false
+          this.formStatus = 'update'
+        }
+      },
+      handlerAdd() {
+        this.resetForm()
+        this.formEdit = false
+        this.formStatus = 'create'
+      },
+      handleDelete() {
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delObj(this.currentId).then(() => {
+            this.getList()
+            this.resetForm()
+            this.onCancel()
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        })
+      },
+      update() {
+        putObj(this.form).then(() => {
+          this.getList()
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      },
+      create() {
+        addObj(this.form).then(() => {
+          this.getList()
+          this.$notify({
+            title: '成功',
+            message: '创建成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      },
+      onCancel() {
+        this.formEdit = true
+        this.formStatus = ''
+      },
+      resetForm() {
+        this.form = {
+          parentId: this.currentId,
+          keyworld: undefined,
+          valueDesc: undefined,
+          classLevel: undefined,
+          classType: undefined,
+          isDeleted: undefined,
+          id: undefined,
+          classOrder: undefined
+        }
+      }
     }
   }
-};
 </script>
+

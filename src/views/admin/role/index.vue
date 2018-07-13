@@ -7,12 +7,6 @@
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 99%">
 
-      <el-table-column align="center" label="序号">
-        <template slot-scope="scope">
-          <span>{{scope.row.roleId}}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column label="角色名称">
         <template slot-scope="scope">
           <span>{{scope.row.roleName}}</span>
@@ -27,19 +21,19 @@
 
       <el-table-column align="center" label="角色描述">
         <template slot-scope="scope">
-          <span>{{scope.row.roleDesc }}</span>
+          <span>{{scope.row.roleDesc}}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="所属部门">
         <template slot-scope="scope">
-          <span>{{scope.row.deptName }}</span>
+          <span>{{scope.row.deptName}}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
-          <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.gmtCreate | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
 
@@ -71,9 +65,9 @@
         <el-form-item label="描述" prop="roleDesc">
           <el-input v-model="form.roleDesc" placeholder="描述"></el-input>
         </el-form-item>
-        <el-form-item label="所属部门" prop="roleDept">
+        <el-form-item label="所属部门" prop="deptId">
           <el-input v-model="form.deptName" placeholder="选择部门" @focus="handleDept()" readonly></el-input>
-          <el-input type="hidden" v-model="form.roleDeptId"></el-input>
+          <el-input type="hidden" v-model="form.deptId"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,10 +100,10 @@ import {
   putObj,
   delObj,
   permissionUpd,
+  roleTree,
   fetchRoleTree,
   fetchDeptTree
 } from "@/api/role";
-import { fetchTree } from "@/api/menu";
 import { mapGetters } from "vuex";
 import waves from "@/directive/waves/index.js"; // 水波纹指令
 
@@ -139,7 +133,7 @@ export default {
         roleCode: undefined,
         roleDesc: undefined,
         deptName: undefined,
-        roleDeptId: undefined
+        deptId: undefined
       },
       roleId: undefined,
       roleCode: undefined,
@@ -236,25 +230,25 @@ export default {
       this.dialogFormVisible = true;
     },
     handleUpdate(row) {
-      getObj(row.roleId).then(response => {
+      getObj(row.id).then(response => {
         this.form = response.data;
         this.form.deptName = row.deptName;
-        this.form.roleDeptId = row.roleDeptId;
+        this.form.deptId = row.deptId;
         this.dialogFormVisible = true;
         this.dialogStatus = "update";
       });
     },
     handlePermission(row) {
-      fetchRoleTree(row.roleCode)
+      fetchRoleTree(row.id)
         .then(response => {
           this.checkedKeys = response.data;
-          return fetchTree();
+          return roleTree();
         })
         .then(response => {
           this.treeData = response.data;
           this.dialogStatus = "permission";
           this.dialogPermissionVisible = true;
-          this.roleId = row.roleId;
+          this.roleId = row.id;
           this.roleCode = row.roleCode;
         });
     },
@@ -266,16 +260,16 @@ export default {
     },
     filterNode(value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data.label.indexOf(value) !== 0;
     },
     getNodeData(data) {
       this.dialogDeptVisible = false;
-      this.form.roleDeptId = data.id;
+      this.form.deptId = data.id;
       this.form.deptName = data.name;
       console.log(data);
     },
     handleDelete(row) {
-      delObj(row.roleId).then(response => {
+      delObj(row.id).then(response => {
         this.dialogFormVisible = false;
         this.getList();
         this.$notify({
@@ -332,10 +326,10 @@ export default {
     updatePermession(roleId, roleCode) {
       permissionUpd(roleId, this.$refs.menuTree.getCheckedKeys()).then(() => {
         this.dialogPermissionVisible = false;
-        fetchTree()
+        roleTree()
           .then(response => {
             this.treeData = response.data;
-            return fetchRoleTree(roleCode);
+            return fetchRoleTree(roleId);
           })
           .then(response => {
             this.checkedKeys = response.data;
@@ -353,7 +347,8 @@ export default {
         id: undefined,
         roleName: undefined,
         roleCode: undefined,
-        roleDesc: undefined
+        roleDesc: undefined,
+        deptId: undefined
       };
     }
   }

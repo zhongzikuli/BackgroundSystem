@@ -15,4 +15,8 @@
     height: 100%;
     overflow: hidden;
   }
+
+  .flex {
+    display: flex;
+  }
 </style>

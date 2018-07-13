@@ -6,7 +6,7 @@
     <transition-group name="fade">
       <template v-if="!isCollapse">
         <span class="logo_title is-bold" key="1">Pig </span>
-        <span class="logo_subtitle" key="2">微服务快速开发框架</span>
+        <span class="logo_subtitle" key="2">开发框架</span>
       </template>
     </transition-group>
   </div>
@@ -42,7 +42,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 230px;
+  width: 200px;
   height: 64px;
   line-height: 64px;
   background: #002140;

@@ -1,5 +1,5 @@
 <template>
-  <div class="top">
+  <div class="top flex">
     <div class="top-button is-left">
       <div class="tags-breadcrumb">
         <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
@@ -45,6 +45,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import {mapState, mapGetters} from "vuex";
   import {fullscreenToggel, listenfullscreen} from "@/util/util";
@@ -54,7 +55,7 @@
 
   export default {
     components: {topLock, topMenu, topTheme},
-    name: "top",
+    name: "index",
     data() {
       return {};
     },

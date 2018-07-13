@@ -157,7 +157,7 @@
         this.showElement = true
       },
       handlerEdit() {
-        if (this.form.deptId) {
+        if (this.form.id) {
           this.formEdit = false
           this.formStatus = 'update'
         }

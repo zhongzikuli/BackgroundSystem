@@ -35,9 +35,7 @@ iconfontVersion.forEach(ele => {
   loadStyle(iconfontUrl.replace('$key', ele));
 })
 
-
 Vue.config.productionTip = false;
-
 
 export function createApp() {
   const app = new Vue({
