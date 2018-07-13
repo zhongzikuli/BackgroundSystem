@@ -33,7 +33,7 @@ export function mobileLogin(mobile, code) {
 
 export const getUserInfo = () => {
   return request({
-    url: '/userservice/user/getUserInfo',
+    url: '/userservice/user/userInfo',
     method: 'get'
   })
 }

@@ -68,7 +68,14 @@ export function permissionUpd(roleId, menuIds) {
 
 export function fetchRoleTree(roleId) {
   return request({
-    url: '/userservice/menu/roleTree/' + roleId,
+    url: '/userservice/role/roleTree/' + roleId,
+    method: 'get'
+  })
+}
+
+export function roleTree() {
+  return request({
+    url: '/userservice/role/roleTree',
     method: 'get'
   })
 }

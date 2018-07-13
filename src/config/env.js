@@ -13,14 +13,11 @@
 let baseUrl = '';
 let iconfontVersion = ['567566_r22zi6t8noas8aor', '599693_c3ju5pfa6altmx6r'];
 let iconfontUrl = `//at.alicdn.com/t/font_$key.css`;
-let codeUrl = ''
-if (process.env.NODE_ENV == 'development') {
-  baseUrl = `http://192.168.0.109:5555/api/v1/`;
-  codeUrl = `/authservice/authentication/code`
-} else if (process.env.NODE_ENV == 'test') {
+let codeUrl = `/authservice/authentication/code`
+ if (process.env.NODE_ENV == 'test') {
   baseUrl = `http://192.168.0.109:5555/api/v1/`;
   codeUrl = `${baseUrl}authservice/authentication/code`
-} else {
+} else if(process.env.NODE_ENV == 'production') {
   baseUrl = `http://192.168.0.109:5555/api/v1/`;
   codeUrl = `${baseUrl}authservice/authentication/code`
 }

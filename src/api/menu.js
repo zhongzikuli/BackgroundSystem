@@ -3,13 +3,6 @@
  */
 import request from '@/router/axios'
 
-export const GetMenu = () => {
-  return request({
-    url: '/userservice/menu/getUserTree',
-    method: 'get'
-  })
-}
-
 export const fetchTree = query => {
   return request({
     url: '/userservice/menu/tree',
@@ -21,13 +14,6 @@ export const fetchTree = query => {
 export const fetchAll = () => {
   return request({
     url: '/api/v1/menu/navMenu',
-    method: 'get'
-  })
-}
-
-export const fetchUserTree = () => {
-  return request({
-    url: '/api/v1/menu/userTree',
     method: 'get'
   })
 }

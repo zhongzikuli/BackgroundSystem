@@ -3,6 +3,13 @@
  */
 import request from '@/router/axios'
 
+export const GetMenu = () => {
+  return request({
+    url: '/userservice/user/userTree',
+    method: 'get'
+  })
+}
+
 export const fetchList = query => {
   return request({
     url: '/userservice/user/userPage',
