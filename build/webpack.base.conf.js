@@ -25,6 +25,7 @@ module.exports = {
     'vuex': 'Vuex',
     'axios': 'axios',
     'element-ui': 'ELEMENT',
+    'AMap': 'AMap'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

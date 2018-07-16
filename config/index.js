@@ -1,4 +1,3 @@
-
 // see http://vuejs-templates.github.io/webpack for documentation.
 let path = require('path')
 //let baseUrl = 'http://192.168.0.109:5555';
@@ -35,21 +34,28 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8000,
+    port: 8009,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     host: 'localhost',
     assetsPublicPath: '/',
     proxyTable: {
       '/userservice': {
-        target: 'http://192.168.0.109:5555/api/v1/',
+        target: 'http://192.168.0.219:5555/api/v1/',
         changeOrigin: true,
         pathRewrite: {
           '^/userservice': '/userservice'
         }
       },
+      '/orderservice': {
+        target: 'http://192.168.0.219:5555/api/v1/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/orderservice': '/orderservice'
+        }
+      },
       '/authservice': {
-        target: 'http://192.168.0.109:5555/api/v1/',
+        target: 'http://192.168.0.219:5555/api/v1/',
         changeOrigin: true,
         pathRewrite: {
           '^/authservice': '/authservice'
