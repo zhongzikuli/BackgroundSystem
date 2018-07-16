@@ -63,6 +63,30 @@ export default [{
     name: '字典管理',
     component: _import('admin/dict/index', 'views')
   }]
+},{
+  path: '/position',
+  component: Layout,
+  redirect: '/position/supervise',
+  children: [{
+    path: 'supervise',
+    name: '定位监控',
+    meta: {
+      keepAlive: true
+    },
+    component: _import('location/supervise/index', 'views')
+  }]
+},{
+  path: '/device',
+  component: Layout,
+  redirect: '/device/gps',
+  children: [{
+    path: 'gps',
+    name: '设备管理',
+    meta: {
+      keepAlive: true
+    },
+    component: _import('device/gps/index', 'views')
+  }]
 }, {
   path: '/404',
   component: _import('error-page/404', 'components'),

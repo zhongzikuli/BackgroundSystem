@@ -5,7 +5,7 @@ import {getToken, setToken, removeToken} from '@/util/auth'
 import {setStore, getStore} from '@/util/store'
 import {validatenull} from '@/util/validate'
 import {loginByUsername, mobileLogin, getUserInfo, logout} from '@/api/login'
-import {GetMenu} from '@/api/menu'
+import {GetMenu} from '@/api/user'
 
 const user = {
   state: {
