@@ -1,5 +1,5 @@
 <template>
-  <div class="top flex">
+  <div class="top">
     <div class="top-button is-left">
       <div class="tags-breadcrumb">
         <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
@@ -24,12 +24,12 @@
           <i :class="isFullScren?'icon-tuichuquanping':'icon-quanping'" @click="handleScreen"></i>
         </span>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="用户头像" placement="bottom">
+      <!-- <el-tooltip class="item" effect="dark" content="用户头像" placement="bottom">
         <img class="top-userImg" :src="userInfo.avatar">
-      </el-tooltip>
+      </el-tooltip> -->
       <el-dropdown>
         <span class="el-dropdown-link">
-          {{userInfo.username}}
+          <!-- {{userInfo.username}} -->
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -45,7 +45,6 @@
     </div>
   </div>
 </template>
-
 <script>
   import {mapState, mapGetters} from "vuex";
   import {fullscreenToggel, listenfullscreen} from "@/util/util";
@@ -55,7 +54,7 @@
 
   export default {
     components: {topLock, topMenu, topTheme},
-    name: "index",
+    name: "top",
     data() {
       return {};
     },

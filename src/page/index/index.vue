@@ -1,8 +1,8 @@
 <template>
   <div class="pull-height animated" :class="{'zoomOutUp': isLock}">
-    <div class="index flex">
+    <div class="index">
       <sidebar class="left"></sidebar>
-      <div class="right flex">
+      <div class="right">
         <div class="nav">
           <top></top>
           <tags></tags>
@@ -20,43 +20,56 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import top from "./top";
   import tags from "./tags";
-  import sidebar from "./sidebar";
+  import top from "./top/";
+  import sidebar from "./sidebar/";
 
   export default {
-    name: "index",
     components: {top, tags, sidebar},
+    name: "index",
     data() {
       return {};
     },
-    created() {},
-    mounted() {},
-    computed: mapGetters(["isLock"])
+    created() {
+    },
+    mounted() {
+    },
+    computed: mapGetters(["isLock"]),
+    props: [],
+    methods: {}
   };
 </script>
 
 <style lang="scss" scoped>
   .index {
+    display: flex;
     position: relative;
     height: 100%;
     background: #fff;
     overflow: hidden;
     .left {
-      width: 200px;
+      width: 230px;
       overflow-y: auto;
     }
     .right {
+      padding-top: 107px;
+      position: relative;
       flex: 1;
-      flex-direction: column;
-      .main {
-        flex: 1;
-        overflow-y: scroll;
-      }
-      .nav {
-        width: 100%;
-        height: 108px;
-      }
+    }
+    .main {
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+    .top {
+      margin-bottom: 2px;
+      display: flex;
     }
   }
 </style>

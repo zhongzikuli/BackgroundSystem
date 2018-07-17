@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import MENU from "@/mock/menu";
 import { setUrlPath } from "@/util/util";
 import { mapGetters } from "vuex";
 import SidebarItem from "./sidebarItem";
