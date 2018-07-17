@@ -1,9 +1,6 @@
 /**
  * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
  */
-/**
- * Created by jiachenpan on 16/11/18.
- */
 
 export const isvalidUsername = str => {
   const valid_map = ['admin', 'editor']

@@ -27,7 +27,7 @@
     return Object.prototype.toString.call(err).indexOf('Error') > -1
   }
   
-  var View = {
+  let View = {
     name: 'router-view',
     functional: true,
     props: {
@@ -37,24 +37,24 @@
       }
     },
     render: function render (_, ref) {
-      var props = ref.props;
-      var children = ref.children;
-      var parent = ref.parent;
-      var data = ref.data;
+      let props = ref.props;
+      let children = ref.children;
+      let parent = ref.parent;
+      let data = ref.data;
   
       data.routerView = true;
   
       // directly use parent context's createElement() function
       // so that components rendered by router-view can resolve named slots
-      var h = parent.$createElement;
-      var name = props.name;
-      var route = parent.$route;
-      var cache = parent._routerViewCache || (parent._routerViewCache = {});
+      let h = parent.$createElement;
+      let name = props.name;
+      let route = parent.$route;
+      let cache = parent._routerViewCache || (parent._routerViewCache = {});
   
       // determine current view depth, also check to see if the tree
       // has been toggled inactive but kept-alive.
-      var depth = 0;
-      var inactive = false;
+      let depth = 0;
+      let inactive = false;
       while (parent && parent._routerRoot !== parent) {
         if (parent.$vnode && parent.$vnode.data.routerView) {
           depth++;
@@ -71,20 +71,20 @@
         return h(cache[name], data, children)
       }
   
-      var matched = route.matched[depth];
+      let matched = route.matched[depth];
       // render empty node if no matched route
       if (!matched) {
         cache[name] = null;
         return h()
       }
   
-      var component = cache[name] = matched.components[name];
+      let component = cache[name] = matched.components[name];
   
       // attach instance registration hook
       // this will be called in the instance's injected lifecycle hooks
       data.registerRouteInstance = function (vm, val) {
         // val could be undefined for unregistration
-        var current = matched.instances[name];
+        let current = matched.instances[name];
         if (
           (val && current !== vm) ||
           (!val && current === vm)
@@ -100,13 +100,13 @@
       };
   
       // resolve props
-      var propsToPass = data.props = resolveProps(route, matched.props && matched.props[name]);
+      let propsToPass = data.props = resolveProps(route, matched.props && matched.props[name]);
       if (propsToPass) {
         // clone to prevent mutation
         propsToPass = data.props = extend({}, propsToPass);
         // pass non-declared props as attrs
-        var attrs = data.attrs = data.attrs || {};
-        for (var key in propsToPass) {
+        let attrs = data.attrs = data.attrs || {};
+        for (let key in propsToPass) {
           if (!component.props || !(key in component.props)) {
             attrs[key] = propsToPass[key];
             delete propsToPass[key];
@@ -140,7 +140,7 @@
   }
   
   function extend (to, from) {
-    for (var key in from) {
+    for (let key in from) {
       to[key] = from[key];
     }
     return to
@@ -148,18 +148,18 @@
   
   /*  */
   
-  var encodeReserveRE = /[!'()*]/g;
-  var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
-  var commaRE = /%2C/g;
+  let encodeReserveRE = /[!'()*]/g;
+  let encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
+  let commaRE = /%2C/g;
   
   // fixed encodeURIComponent which is more conformant to RFC3986:
   // - escapes [!'()*]
   // - preserve commas
-  var encode = function (str) { return encodeURIComponent(str)
+  let encode = function (str) { return encodeURIComponent(str)
     .replace(encodeReserveRE, encodeReserveReplacer)
     .replace(commaRE, ','); };
   
-  var decode = decodeURIComponent;
+  let decode = decodeURIComponent;
   
   function resolveQuery (
     query,
@@ -168,22 +168,22 @@
   ) {
     if ( extraQuery === void 0 ) extraQuery = {};
   
-    var parse = _parseQuery || parseQuery;
-    var parsedQuery;
+    let parse = _parseQuery || parseQuery;
+    let parsedQuery;
     try {
       parsedQuery = parse(query || '');
     } catch (e) {
       "development" !== 'production' && warn(false, e.message);
       parsedQuery = {};
     }
-    for (var key in extraQuery) {
+    for (let key in extraQuery) {
       parsedQuery[key] = extraQuery[key];
     }
     return parsedQuery
   }
   
   function parseQuery (query) {
-    var res = {};
+    let res = {};
   
     query = query.trim().replace(/^(\?|#|&)/, '');
   
@@ -192,9 +192,9 @@
     }
   
     query.split('&').forEach(function (param) {
-      var parts = param.replace(/\+/g, ' ').split('=');
-      var key = decode(parts.shift());
-      var val = parts.length > 0
+      let parts = param.replace(/\+/g, ' ').split('=');
+      let key = decode(parts.shift());
+      let val = parts.length > 0
         ? decode(parts.join('='))
         : null;
   
@@ -211,8 +211,8 @@
   }
   
   function stringifyQuery (obj) {
-    var res = obj ? Object.keys(obj).map(function (key) {
-      var val = obj[key];
+    let res = obj ? Object.keys(obj).map(function (key) {
+      let val = obj[key];
   
       if (val === undefined) {
         return ''
@@ -223,7 +223,7 @@
       }
   
       if (Array.isArray(val)) {
-        var result = [];
+        let result = [];
         val.forEach(function (val2) {
           if (val2 === undefined) {
             return
@@ -245,7 +245,7 @@
   /*  */
   
   
-  var trailingSlashRE = /\/?$/;
+  let trailingSlashRE = /\/?$/;
   
   function createRoute (
     record,
@@ -253,14 +253,14 @@
     redirectedFrom,
     router
   ) {
-    var stringifyQuery$$1 = router && router.options.stringifyQuery;
+    let stringifyQuery$$1 = router && router.options.stringifyQuery;
   
-    var query = location.query || {};
+    let query = location.query || {};
     try {
       query = clone(query);
     } catch (e) {}
   
-    var route = {
+    let route = {
       name: location.name || (record && record.name),
       meta: (record && record.meta) || {},
       path: location.path || '/',
@@ -280,8 +280,8 @@
     if (Array.isArray(value)) {
       return value.map(clone)
     } else if (value && typeof value === 'object') {
-      var res = {};
-      for (var key in value) {
+      let res = {};
+      for (let key in value) {
         res[key] = clone(value[key]);
       }
       return res
@@ -291,12 +291,12 @@
   }
   
   // the starting route that represents the initial state
-  var START = createRoute(null, {
+  let START = createRoute(null, {
     path: '/'
   });
   
   function formatMatch (record) {
-    var res = [];
+    let res = [];
     while (record) {
       res.unshift(record);
       record = record.parent;
@@ -308,11 +308,11 @@
     ref,
     _stringifyQuery
   ) {
-    var path = ref.path;
-    var query = ref.query; if ( query === void 0 ) query = {};
-    var hash = ref.hash; if ( hash === void 0 ) hash = '';
+    let path = ref.path;
+    let query = ref.query; if ( query === void 0 ) query = {};
+    let hash = ref.hash; if ( hash === void 0 ) hash = '';
   
-    var stringify = _stringifyQuery || stringifyQuery;
+    let stringify = _stringifyQuery || stringifyQuery;
     return (path || '/') + stringify(query) + hash
   }
   
@@ -345,14 +345,14 @@
   
     // handle null value #1566
     if (!a || !b) { return a === b }
-    var aKeys = Object.keys(a);
-    var bKeys = Object.keys(b);
+    let aKeys = Object.keys(a);
+    let bKeys = Object.keys(b);
     if (aKeys.length !== bKeys.length) {
       return false
     }
     return aKeys.every(function (key) {
-      var aVal = a[key];
-      var bVal = b[key];
+      let aVal = a[key];
+      let bVal = b[key];
       // check nested equality
       if (typeof aVal === 'object' && typeof bVal === 'object') {
         return isObjectEqual(aVal, bVal)
@@ -372,7 +372,7 @@
   }
   
   function queryIncludes (current, target) {
-    for (var key in target) {
+    for (let key in target) {
       if (!(key in current)) {
         return false
       }
@@ -383,10 +383,10 @@
   /*  */
   
   // work around weird flow bug
-  var toTypes = [String, Object];
-  var eventTypes = [String, Array];
+  let toTypes = [String, Object];
+  let eventTypes = [String, Array];
   
-  var Link = {
+  let Link = {
     name: 'router-link',
     props: {
       to: {
@@ -408,32 +408,32 @@
       }
     },
     render: function render (h) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var router = this.$router;
-      var current = this.$route;
-      var ref = router.resolve(this.to, current, this.append);
-      var location = ref.location;
-      var route = ref.route;
-      var href = ref.href;
+      let router = this.$router;
+      let current = this.$route;
+      let ref = router.resolve(this.to, current, this.append);
+      let location = ref.location;
+      let route = ref.route;
+      let href = ref.href;
   
-      var classes = {};
-      var globalActiveClass = router.options.linkActiveClass;
-      var globalExactActiveClass = router.options.linkExactActiveClass;
+      let classes = {};
+      let globalActiveClass = router.options.linkActiveClass;
+      let globalExactActiveClass = router.options.linkExactActiveClass;
       // Support global empty active class
-      var activeClassFallback = globalActiveClass == null
+      let activeClassFallback = globalActiveClass == null
               ? 'router-link-active'
               : globalActiveClass;
-      var exactActiveClassFallback = globalExactActiveClass == null
+      let exactActiveClassFallback = globalExactActiveClass == null
               ? 'router-link-exact-active'
               : globalExactActiveClass;
-      var activeClass = this.activeClass == null
+      let activeClass = this.activeClass == null
               ? activeClassFallback
               : this.activeClass;
-      var exactActiveClass = this.exactActiveClass == null
+      let exactActiveClass = this.exactActiveClass == null
               ? exactActiveClassFallback
               : this.exactActiveClass;
-      var compareTarget = location.path
+      let compareTarget = location.path
         ? createRoute(null, location, null, router)
         : route;
   
@@ -442,7 +442,7 @@
         ? classes[exactActiveClass]
         : isIncludedRoute(current, compareTarget);
   
-      var handler = function (e) {
+      let handler = function (e) {
         if (guardEvent(e)) {
           if (this$1.replace) {
             router.replace(location);
@@ -452,14 +452,14 @@
         }
       };
   
-      var on = { click: guardEvent };
+      let on = { click: guardEvent };
       if (Array.isArray(this.event)) {
         this.event.forEach(function (e) { on[e] = handler; });
       } else {
         on[this.event] = handler;
       }
   
-      var data = {
+      let data = {
         class: classes
       };
   
@@ -468,14 +468,14 @@
         data.attrs = { href: href };
       } else {
         // find the first <a> child and apply listener and href
-        var a = findAnchor(this.$slots.default);
+        let a = findAnchor(this.$slots.default);
         if (a) {
           // in case the <a> is a static node
           a.isStatic = false;
-          var extend = _Vue.util.extend;
-          var aData = a.data = extend({}, a.data);
+          let extend = _Vue.util.extend;
+          let aData = a.data = extend({}, a.data);
           aData.on = on;
-          var aAttrs = a.data.attrs = extend({}, a.data.attrs);
+          let aAttrs = a.data.attrs = extend({}, a.data.attrs);
           aAttrs.href = href;
         } else {
           // doesn't have <a> child, apply listener to self
@@ -496,7 +496,7 @@
     if (e.button !== undefined && e.button !== 0) { return }
     // don't redirect if `target="_blank"`
     if (e.currentTarget && e.currentTarget.getAttribute) {
-      var target = e.currentTarget.getAttribute('target');
+      let target = e.currentTarget.getAttribute('target');
       if (/\b_blank\b/i.test(target)) { return }
     }
     // this may be a Weex event which doesn't have this method
@@ -508,8 +508,8 @@
   
   function findAnchor (children) {
     if (children) {
-      var child;
-      for (var i = 0; i < children.length; i++) {
+      let child;
+      for (let i = 0; i < children.length; i++) {
         child = children[i];
         if (child.tag === 'a') {
           return child
@@ -521,7 +521,7 @@
     }
   }
   
-  var _Vue;
+  let _Vue;
   
   function install (Vue) {
     if (install.installed && _Vue === Vue) { return }
@@ -529,10 +529,10 @@
   
     _Vue = Vue;
   
-    var isDef = function (v) { return v !== undefined; };
+    let isDef = function (v) { return v !== undefined; };
   
-    var registerInstance = function (vm, callVal) {
-      var i = vm.$options._parentVnode;
+    let registerInstance = function (vm, callVal) {
+      let i = vm.$options._parentVnode;
       if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
         i(vm, callVal);
       }
@@ -566,14 +566,14 @@
     Vue.component('router-view', View);
     Vue.component('router-link', Link);
   
-    var strats = Vue.config.optionMergeStrategies;
+    let strats = Vue.config.optionMergeStrategies;
     // use the same hook merging strategy for route hooks
     strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
   }
   
   /*  */
   
-  var inBrowser = typeof window !== 'undefined';
+  let inBrowser = typeof window !== 'undefined';
   
   /*  */
   
@@ -582,7 +582,7 @@
     base,
     append
   ) {
-    var firstChar = relative.charAt(0);
+    let firstChar = relative.charAt(0);
     if (firstChar === '/') {
       return relative
     }
@@ -591,7 +591,7 @@
       return base + relative
     }
   
-    var stack = base.split('/');
+    let stack = base.split('/');
   
     // remove trailing segment if:
     // - not appending
@@ -601,9 +601,9 @@
     }
   
     // resolve relative path
-    var segments = relative.replace(/^\//, '').split('/');
-    for (var i = 0; i < segments.length; i++) {
-      var segment = segments[i];
+    let segments = relative.replace(/^\//, '').split('/');
+    for (let i = 0; i < segments.length; i++) {
+      let segment = segments[i];
       if (segment === '..') {
         stack.pop();
       } else if (segment !== '.') {
@@ -620,16 +620,16 @@
   }
   
   function parsePath (path) {
-    var hash = '';
-    var query = '';
+    let hash = '';
+    let query = '';
   
-    var hashIndex = path.indexOf('#');
+    let hashIndex = path.indexOf('#');
     if (hashIndex >= 0) {
       hash = path.slice(hashIndex);
       path = path.slice(0, hashIndex);
     }
   
-    var queryIndex = path.indexOf('?');
+    let queryIndex = path.indexOf('?');
     if (queryIndex >= 0) {
       query = path.slice(queryIndex + 1);
       path = path.slice(0, queryIndex);
@@ -646,25 +646,25 @@
     return path.replace(/\/\//g, '/')
   }
   
-  var isarray = Array.isArray || function (arr) {
+  let isarray = Array.isArray || function (arr) {
     return Object.prototype.toString.call(arr) == '[object Array]';
   };
   
   /**
    * Expose `pathToRegexp`.
    */
-  var pathToRegexp_1 = pathToRegexp;
-  var parse_1 = parse;
-  var compile_1 = compile;
-  var tokensToFunction_1 = tokensToFunction;
-  var tokensToRegExp_1 = tokensToRegExp;
+  let pathToRegexp_1 = pathToRegexp;
+  let parse_1 = parse;
+  let compile_1 = compile;
+  let tokensToFunction_1 = tokensToFunction;
+  let tokensToRegExp_1 = tokensToRegExp;
   
   /**
    * The main path matching regexp utility.
    *
    * @type {RegExp}
    */
-  var PATH_REGEXP = new RegExp([
+  let PATH_REGEXP = new RegExp([
     // Match escaped characters that would otherwise appear in future matches.
     // This allows the user to escape special characters that won't transform.
     '(\\\\.)',
@@ -685,17 +685,17 @@
    * @return {!Array}
    */
   function parse (str, options) {
-    var tokens = [];
-    var key = 0;
-    var index = 0;
-    var path = '';
-    var defaultDelimiter = options && options.delimiter || '/';
-    var res;
+    let tokens = [];
+    let key = 0;
+    let index = 0;
+    let path = '';
+    let defaultDelimiter = options && options.delimiter || '/';
+    let res;
   
     while ((res = PATH_REGEXP.exec(str)) != null) {
-      var m = res[0];
-      var escaped = res[1];
-      var offset = res.index;
+      let m = res[0];
+      let escaped = res[1];
+      let offset = res.index;
       path += str.slice(index, offset);
       index = offset + m.length;
   
@@ -705,13 +705,13 @@
         continue
       }
   
-      var next = str[index];
-      var prefix = res[2];
-      var name = res[3];
-      var capture = res[4];
-      var group = res[5];
-      var modifier = res[6];
-      var asterisk = res[7];
+      let next = str[index];
+      let prefix = res[2];
+      let name = res[3];
+      let capture = res[4];
+      let group = res[5];
+      let modifier = res[6];
+      let asterisk = res[7];
   
       // Push the current path onto the tokens.
       if (path) {
@@ -719,11 +719,11 @@
         path = '';
       }
   
-      var partial = prefix != null && next != null && next !== prefix;
-      var repeat = modifier === '+' || modifier === '*';
-      var optional = modifier === '?' || modifier === '*';
-      var delimiter = res[2] || defaultDelimiter;
-      var pattern = capture || group;
+      let partial = prefix != null && next != null && next !== prefix;
+      let repeat = modifier === '+' || modifier === '*';
+      let optional = modifier === '?' || modifier === '*';
+      let delimiter = res[2] || defaultDelimiter;
+      let pattern = capture || group;
   
       tokens.push({
         name: name || key++,
@@ -790,23 +790,23 @@
    */
   function tokensToFunction (tokens) {
     // Compile all the tokens into regexps.
-    var matches = new Array(tokens.length);
+    let matches = new Array(tokens.length);
   
     // Compile all the patterns before compilation.
-    for (var i = 0; i < tokens.length; i++) {
+    for (let i = 0; i < tokens.length; i++) {
       if (typeof tokens[i] === 'object') {
         matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
       }
     }
   
     return function (obj, opts) {
-      var path = '';
-      var data = obj || {};
-      var options = opts || {};
-      var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
+      let path = '';
+      let data = obj || {};
+      let options = opts || {};
+      let encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
   
-      for (var i = 0; i < tokens.length; i++) {
-        var token = tokens[i];
+      for (let i = 0; i < tokens.length; i++) {
+        let token = tokens[i];
   
         if (typeof token === 'string') {
           path += token;
@@ -814,8 +814,8 @@
           continue
         }
   
-        var value = data[token.name];
-        var segment;
+        let value = data[token.name];
+        let segment;
   
         if (value == null) {
           if (token.optional) {
@@ -843,7 +843,7 @@
             }
           }
   
-          for (var j = 0; j < value.length; j++) {
+          for (let j = 0; j < value.length; j++) {
             segment = encode(value[j]);
   
             if (!matches[i].test(segment)) {
@@ -920,10 +920,10 @@
    */
   function regexpToRegexp (path, keys) {
     // Use a negative lookahead to match only capturing groups.
-    var groups = path.source.match(/\((?!\?)/g);
+    let groups = path.source.match(/\((?!\?)/g);
   
     if (groups) {
-      for (var i = 0; i < groups.length; i++) {
+      for (let i = 0; i < groups.length; i++) {
         keys.push({
           name: i,
           prefix: null,
@@ -949,13 +949,13 @@
    * @return {!RegExp}
    */
   function arrayToRegexp (path, keys, options) {
-    var parts = [];
+    let parts = [];
   
-    for (var i = 0; i < path.length; i++) {
+    for (let i = 0; i < path.length; i++) {
       parts.push(pathToRegexp(path[i], keys, options).source);
     }
   
-    var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
+    let regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
   
     return attachKeys(regexp, keys)
   }
@@ -988,19 +988,19 @@
   
     options = options || {};
   
-    var strict = options.strict;
-    var end = options.end !== false;
-    var route = '';
+    let strict = options.strict;
+    let end = options.end !== false;
+    let route = '';
   
     // Iterate over the tokens and create our regexp string.
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
+    for (let i = 0; i < tokens.length; i++) {
+      let token = tokens[i];
   
       if (typeof token === 'string') {
         route += escapeString(token);
       } else {
-        var prefix = escapeString(token.prefix);
-        var capture = '(?:' + token.pattern + ')';
+        let prefix = escapeString(token.prefix);
+        let capture = '(?:' + token.pattern + ')';
   
         keys.push(token);
   
@@ -1022,8 +1022,8 @@
       }
     }
   
-    var delimiter = escapeString(options.delimiter || '/');
-    var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
+    let delimiter = escapeString(options.delimiter || '/');
+    let endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
   
     // In non-strict mode we allow a slash at the end of match. If the path to
     // match already ends with a slash, we remove it for consistency. The slash
@@ -1083,7 +1083,7 @@
   /*  */
   
   // $flow-disable-line
-  var regexpCompileCache = Object.create(null);
+  let regexpCompileCache = Object.create(null);
   
   function fillParams (
     path,
@@ -1091,7 +1091,7 @@
     routeMsg
   ) {
     try {
-      var filler =
+      let filler =
         regexpCompileCache[path] ||
         (regexpCompileCache[path] = pathToRegexp_1.compile(path));
       return filler(params || {}, { pretty: true })
@@ -1112,18 +1112,18 @@
     oldNameMap
   ) {
     // the path list is used to control path matching priority
-    var pathList = oldPathList || [];
+    let pathList = oldPathList || [];
     // $flow-disable-line
-    var pathMap = oldPathMap || Object.create(null);
+    let pathMap = oldPathMap || Object.create(null);
     // $flow-disable-line
-    var nameMap = oldNameMap || Object.create(null);
+    let nameMap = oldNameMap || Object.create(null);
   
     routes.forEach(function (route) {
       addRouteRecord(pathList, pathMap, nameMap, route);
     });
   
     // ensure wildcard routes are always at the end
-    for (var i = 0, l = pathList.length; i < l; i++) {
+    for (let i = 0, l = pathList.length; i < l; i++) {
       if (pathList[i] === '*') {
         pathList.push(pathList.splice(i, 1)[0]);
         l--;
@@ -1146,8 +1146,8 @@
     parent,
     matchAs
   ) {
-    var path = route.path;
-    var name = route.name;
+    let path = route.path;
+    let name = route.name;
     {
       assert(path != null, "\"path\" is required in a route configuration.");
       assert(
@@ -1157,8 +1157,8 @@
       );
     }
   
-    var pathToRegexpOptions = route.pathToRegexpOptions || {};
-    var normalizedPath = normalizePath(
+    let pathToRegexpOptions = route.pathToRegexpOptions || {};
+    let normalizedPath = normalizePath(
       path,
       parent,
       pathToRegexpOptions.strict
@@ -1168,7 +1168,7 @@
       pathToRegexpOptions.sensitive = route.caseSensitive;
     }
   
-    var record = {
+    let record = {
       path: normalizedPath,
       regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
       components: route.components || { default: route.component },
@@ -1203,7 +1203,7 @@
         }
       }
       route.children.forEach(function (child) {
-        var childMatchAs = matchAs
+        let childMatchAs = matchAs
           ? cleanPath((matchAs + "/" + (child.path)))
           : undefined;
         addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
@@ -1211,12 +1211,12 @@
     }
   
     if (route.alias !== undefined) {
-      var aliases = Array.isArray(route.alias)
+      let aliases = Array.isArray(route.alias)
         ? route.alias
         : [route.alias];
   
       aliases.forEach(function (alias) {
-        var aliasRoute = {
+        let aliasRoute = {
           path: alias,
           children: route.children
         };
@@ -1250,9 +1250,9 @@
   }
   
   function compileRouteRegex (path, pathToRegexpOptions) {
-    var regex = pathToRegexp_1(path, [], pathToRegexpOptions);
+    let regex = pathToRegexp_1(path, [], pathToRegexpOptions);
     {
-      var keys = Object.create(null);
+      let keys = Object.create(null);
       regex.keys.forEach(function (key) {
         warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
         keys[key.name] = true;
@@ -1277,7 +1277,7 @@
     append,
     router
   ) {
-    var next = typeof raw === 'string' ? { path: raw } : raw;
+    let next = typeof raw === 'string' ? { path: raw } : raw;
     // named target
     if (next.name || next._normalized) {
       return next
@@ -1287,12 +1287,12 @@
     if (!next.path && next.params && current) {
       next = assign({}, next);
       next._normalized = true;
-      var params = assign(assign({}, current.params), next.params);
+      let params = assign(assign({}, current.params), next.params);
       if (current.name) {
         next.name = current.name;
         next.params = params;
       } else if (current.matched.length) {
-        var rawPath = current.matched[current.matched.length - 1].path;
+        let rawPath = current.matched[current.matched.length - 1].path;
         next.path = fillParams(rawPath, params, ("path " + (current.path)));
       } else {
         warn(false, "relative params navigation requires a current route.");
@@ -1300,19 +1300,19 @@
       return next
     }
   
-    var parsedPath = parsePath(next.path || '');
-    var basePath = (current && current.path) || '/';
-    var path = parsedPath.path
+    let parsedPath = parsePath(next.path || '');
+    let basePath = (current && current.path) || '/';
+    let path = parsedPath.path
       ? resolvePath(parsedPath.path, basePath, append || next.append)
       : basePath;
   
-    var query = resolveQuery(
+    let query = resolveQuery(
       parsedPath.query,
       next.query,
       router && router.options.parseQuery
     );
   
-    var hash = next.hash || parsedPath.hash;
+    let hash = next.hash || parsedPath.hash;
     if (hash && hash.charAt(0) !== '#') {
       hash = "#" + hash;
     }
@@ -1326,7 +1326,7 @@
   }
   
   function assign (a, b) {
-    for (var key in b) {
+    for (let key in b) {
       a[key] = b[key];
     }
     return a
@@ -1339,10 +1339,10 @@
     routes,
     router
   ) {
-    var ref = createRouteMap(routes);
-    var pathList = ref.pathList;
-    var pathMap = ref.pathMap;
-    var nameMap = ref.nameMap;
+    let ref = createRouteMap(routes);
+    let pathList = ref.pathList;
+    let pathMap = ref.pathMap;
+    let nameMap = ref.nameMap;
   
     function addRoutes (routes) {
       createRouteMap(routes, pathList, pathMap, nameMap);
@@ -1353,16 +1353,16 @@
       currentRoute,
       redirectedFrom
     ) {
-      var location = normalizeLocation(raw, currentRoute, false, router);
-      var name = location.name;
+      let location = normalizeLocation(raw, currentRoute, false, router);
+      let name = location.name;
   
       if (name) {
-        var record = nameMap[name];
+        let record = nameMap[name];
         {
           warn(record, ("Route with name '" + name + "' does not exist"));
         }
         if (!record) { return _createRoute(null, location) }
-        var paramNames = record.regex.keys
+        let paramNames = record.regex.keys
           .filter(function (key) { return !key.optional; })
           .map(function (key) { return key.name; });
   
@@ -1371,7 +1371,7 @@
         }
   
         if (currentRoute && typeof currentRoute.params === 'object') {
-          for (var key in currentRoute.params) {
+          for (let key in currentRoute.params) {
             if (!(key in location.params) && paramNames.indexOf(key) > -1) {
               location.params[key] = currentRoute.params[key];
             }
@@ -1384,9 +1384,9 @@
         }
       } else if (location.path) {
         location.params = {};
-        for (var i = 0; i < pathList.length; i++) {
-          var path = pathList[i];
-          var record$1 = pathMap[path];
+        for (let i = 0; i < pathList.length; i++) {
+          let path = pathList[i];
+          let record$1 = pathMap[path];
           if (matchRoute(record$1.regex, location.path, location.params)) {
             return _createRoute(record$1, location, redirectedFrom)
           }
@@ -1400,8 +1400,8 @@
       record,
       location
     ) {
-      var originalRedirect = record.redirect;
-      var redirect = typeof originalRedirect === 'function'
+      let originalRedirect = record.redirect;
+      let redirect = typeof originalRedirect === 'function'
           ? originalRedirect(createRoute(record, location, null, router))
           : originalRedirect;
   
@@ -1418,19 +1418,19 @@
         return _createRoute(null, location)
       }
   
-      var re = redirect;
-      var name = re.name;
-      var path = re.path;
-      var query = location.query;
-      var hash = location.hash;
-      var params = location.params;
+      let re = redirect;
+      let name = re.name;
+      let path = re.path;
+      let query = location.query;
+      let hash = location.hash;
+      let params = location.params;
       query = re.hasOwnProperty('query') ? re.query : query;
       hash = re.hasOwnProperty('hash') ? re.hash : hash;
       params = re.hasOwnProperty('params') ? re.params : params;
   
       if (name) {
         // resolved named direct
-        var targetRecord = nameMap[name];
+        let targetRecord = nameMap[name];
         {
           assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
         }
@@ -1443,9 +1443,9 @@
         }, undefined, location)
       } else if (path) {
         // 1. resolve relative redirect
-        var rawPath = resolveRecordPath(path, record);
+        let rawPath = resolveRecordPath(path, record);
         // 2. resolve params
-        var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
+        let resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
         // 3. rematch with existing query and hash
         return match({
           _normalized: true,
@@ -1466,14 +1466,14 @@
       location,
       matchAs
     ) {
-      var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
-      var aliasedMatch = match({
+      let aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
+      let aliasedMatch = match({
         _normalized: true,
         path: aliasedPath
       });
       if (aliasedMatch) {
-        var matched = aliasedMatch.matched;
-        var aliasedRecord = matched[matched.length - 1];
+        let matched = aliasedMatch.matched;
+        let aliasedRecord = matched[matched.length - 1];
         location.params = aliasedMatch.params;
         return _createRoute(aliasedRecord, location)
       }
@@ -1505,7 +1505,7 @@
     path,
     params
   ) {
-    var m = path.match(regex);
+    let m = path.match(regex);
   
     if (!m) {
       return false
@@ -1513,9 +1513,9 @@
       return true
     }
   
-    for (var i = 1, len = m.length; i < len; ++i) {
-      var key = regex.keys[i - 1];
-      var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
+    for (let i = 1, len = m.length; i < len; ++i) {
+      let key = regex.keys[i - 1];
+      let val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
       if (key) {
         params[key.name] = val;
       }
@@ -1531,7 +1531,7 @@
   /*  */
   
   
-  var positionStore = Object.create(null);
+  let positionStore = Object.create(null);
   
   function setupScroll () {
     // Fix for #1585 for Firefox
@@ -1554,7 +1554,7 @@
       return
     }
   
-    var behavior = router.options.scrollBehavior;
+    let behavior = router.options.scrollBehavior;
     if (!behavior) {
       return
     }
@@ -1565,8 +1565,8 @@
   
     // wait until re-render finishes before scrolling
     router.app.$nextTick(function () {
-      var position = getScrollPosition();
-      var shouldScroll = behavior(to, from, isPop ? position : null);
+      let position = getScrollPosition();
+      let shouldScroll = behavior(to, from, isPop ? position : null);
   
       if (!shouldScroll) {
         return
@@ -1587,7 +1587,7 @@
   }
   
   function saveScrollPosition () {
-    var key = getStateKey();
+    let key = getStateKey();
     if (key) {
       positionStore[key] = {
         x: window.pageXOffset,
@@ -1597,16 +1597,16 @@
   }
   
   function getScrollPosition () {
-    var key = getStateKey();
+    let key = getStateKey();
     if (key) {
       return positionStore[key]
     }
   }
   
   function getElementPosition (el, offset) {
-    var docEl = document.documentElement;
-    var docRect = docEl.getBoundingClientRect();
-    var elRect = el.getBoundingClientRect();
+    let docEl = document.documentElement;
+    let docRect = docEl.getBoundingClientRect();
+    let elRect = el.getBoundingClientRect();
     return {
       x: elRect.left - docRect.left - offset.x,
       y: elRect.top - docRect.top - offset.y
@@ -1636,11 +1636,11 @@
   }
   
   function scrollToPosition (shouldScroll, position) {
-    var isObject = typeof shouldScroll === 'object';
+    let isObject = typeof shouldScroll === 'object';
     if (isObject && typeof shouldScroll.selector === 'string') {
-      var el = document.querySelector(shouldScroll.selector);
+      let el = document.querySelector(shouldScroll.selector);
       if (el) {
-        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
+        let offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
         offset = normalizeOffset(offset);
         position = getElementPosition(el, offset);
       } else if (isValidPosition(shouldScroll)) {
@@ -1657,8 +1657,8 @@
   
   /*  */
   
-  var supportsPushState = inBrowser && (function () {
-    var ua = window.navigator.userAgent;
+  let supportsPushState = inBrowser && (function () {
+    let ua = window.navigator.userAgent;
   
     if (
       (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
@@ -1673,11 +1673,11 @@
   })();
   
   // use User Timing api (if present) for more accurate key precision
-  var Time = inBrowser && window.performance && window.performance.now
+  let Time = inBrowser && window.performance && window.performance.now
     ? window.performance
     : Date;
   
-  var _key = genKey();
+  let _key = genKey();
   
   function genKey () {
     return Time.now().toFixed(3)
@@ -1695,7 +1695,7 @@
     saveScrollPosition();
     // try...catch the pushState call to get around Safari
     // DOM Exception 18 where it limits to 100 pushState calls
-    var history = window.history;
+    let history = window.history;
     try {
       if (replace) {
         history.replaceState({ key: _key }, '', url);
@@ -1715,7 +1715,7 @@
   /*  */
   
   function runQueue (queue, fn, cb) {
-    var step = function (index) {
+    let step = function (index) {
       if (index >= queue.length) {
         cb();
       } else {
@@ -1735,9 +1735,9 @@
   
   function resolveAsyncComponents (matched) {
     return function (to, from, next) {
-      var hasAsync = false;
-      var pending = 0;
-      var error = null;
+      let hasAsync = false;
+      let pending = 0;
+      let error = null;
   
       flatMapComponents(matched, function (def, _, match, key) {
         // if it's a function and doesn't have cid attached,
@@ -1749,7 +1749,7 @@
           hasAsync = true;
           pending++;
   
-          var resolve = once(function (resolvedDef) {
+          let resolve = once(function (resolvedDef) {
             if (isESModule(resolvedDef)) {
               resolvedDef = resolvedDef.default;
             }
@@ -1764,8 +1764,8 @@
             }
           });
   
-          var reject = once(function (reason) {
-            var msg = "Failed to resolve async component " + key + ": " + reason;
+          let reject = once(function (reason) {
+            let msg = "Failed to resolve async component " + key + ": " + reason;
             "development" !== 'production' && warn(false, msg);
             if (!error) {
               error = isError(reason)
@@ -1775,7 +1775,7 @@
             }
           });
   
-          var res;
+          let res;
           try {
             res = def(resolve, reject);
           } catch (e) {
@@ -1786,7 +1786,7 @@
               res.then(resolve, reject);
             } else {
               // new syntax in Vue 2.3
-              var comp = res.component;
+              let comp = res.component;
               if (comp && typeof comp.then === 'function') {
                 comp.then(resolve, reject);
               }
@@ -1816,7 +1816,7 @@
     return Array.prototype.concat.apply([], arr)
   }
   
-  var hasSymbol =
+  let hasSymbol =
     typeof Symbol === 'function' &&
     typeof Symbol.toStringTag === 'symbol';
   
@@ -1829,9 +1829,9 @@
   // if the user uses an arrow function shorthand that happens to
   // return that Promise.
   function once (fn) {
-    var called = false;
+    let called = false;
     return function () {
-      var args = [], len = arguments.length;
+      let args = [], len = arguments.length;
       while ( len-- ) args[ len ] = arguments[ len ];
   
       if (called) { return }
@@ -1842,7 +1842,7 @@
   
   /*  */
   
-  var History = function History (router, base) {
+  let History = function History (router, base) {
     this.router = router;
     this.base = normalizeBase(base);
     // start with a route object that stands for "nowhere"
@@ -1874,9 +1874,9 @@
   };
   
   History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-    var route = this.router.match(location, this.current);
+    let route = this.router.match(location, this.current);
     this.confirmTransition(route, function () {
       this$1.updateRoute(route);
       onComplete && onComplete(route);
@@ -1899,10 +1899,10 @@
   };
   
   History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-    var current = this.current;
-    var abort = function (err) {
+    let current = this.current;
+    let abort = function (err) {
       if (isError(err)) {
         if (this$1.errorCbs.length) {
           this$1.errorCbs.forEach(function (cb) { cb(err); });
@@ -1922,12 +1922,12 @@
       return abort()
     }
   
-    var ref = resolveQueue(this.current.matched, route.matched);
-      var updated = ref.updated;
-      var deactivated = ref.deactivated;
-      var activated = ref.activated;
+    let ref = resolveQueue(this.current.matched, route.matched);
+      let updated = ref.updated;
+      let deactivated = ref.deactivated;
+      let activated = ref.activated;
   
-    var queue = [].concat(
+    let queue = [].concat(
       // in-component leave guards
       extractLeaveGuards(deactivated),
       // global before hooks
@@ -1941,7 +1941,7 @@
     );
   
     this.pending = route;
-    var iterator = function (hook, next) {
+    let iterator = function (hook, next) {
       if (this$1.pending !== route) {
         return abort()
       }
@@ -1976,12 +1976,12 @@
     };
   
     runQueue(queue, iterator, function () {
-      var postEnterCbs = [];
-      var isValid = function () { return this$1.current === route; };
+      let postEnterCbs = [];
+      let isValid = function () { return this$1.current === route; };
       // wait until async components are resolved before
       // extracting in-component enter guards
-      var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
-      var queue = enterGuards.concat(this$1.router.resolveHooks);
+      let enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
+      let queue = enterGuards.concat(this$1.router.resolveHooks);
       runQueue(queue, iterator, function () {
         if (this$1.pending !== route) {
           return abort()
@@ -1998,7 +1998,7 @@
   };
   
   History.prototype.updateRoute = function updateRoute (route) {
-    var prev = this.current;
+    let prev = this.current;
     this.current = route;
     this.cb && this.cb(route);
     this.router.afterHooks.forEach(function (hook) {
@@ -2010,7 +2010,7 @@
     if (!base) {
       if (inBrowser) {
         // respect <base> tag
-        var baseEl = document.querySelector('base');
+        let baseEl = document.querySelector('base');
         base = (baseEl && baseEl.getAttribute('href')) || '/';
         // strip full URL origin
         base = base.replace(/^https?:\/\/[^\/]+/, '');
@@ -2030,8 +2030,8 @@
     current,
     next
   ) {
-    var i;
-    var max = Math.max(current.length, next.length);
+    let i;
+    let max = Math.max(current.length, next.length);
     for (i = 0; i < max; i++) {
       if (current[i] !== next[i]) {
         break
@@ -2050,8 +2050,8 @@
     bind,
     reverse
   ) {
-    var guards = flatMapComponents(records, function (def, instance, match, key) {
-      var guard = extractGuard(def, name);
+    let guards = flatMapComponents(records, function (def, instance, match, key) {
+      let guard = extractGuard(def, name);
       if (guard) {
         return Array.isArray(guard)
           ? guard.map(function (guard) { return bind(guard, instance, match, key); })
@@ -2140,25 +2140,25 @@
   /*  */
   
   
-  var HTML5History = (function (History$$1) {
+  let HTML5History = (function (History$$1) {
     function HTML5History (router, base) {
-      var this$1 = this;
+      let this$1 = this;
   
       History$$1.call(this, router, base);
   
-      var expectScroll = router.options.scrollBehavior;
+      let expectScroll = router.options.scrollBehavior;
   
       if (expectScroll) {
         setupScroll();
       }
   
-      var initLocation = getLocation(this.base);
+      let initLocation = getLocation(this.base);
       window.addEventListener('popstate', function (e) {
-        var current = this$1.current;
+        let current = this$1.current;
   
         // Avoiding first `popstate` event dispatched in some browsers but first
         // history route not updated since async guard at the same time.
-        var location = getLocation(this$1.base);
+        let location = getLocation(this$1.base);
         if (this$1.current === START && location === initLocation) {
           return
         }
@@ -2180,10 +2180,10 @@
     };
   
     HTML5History.prototype.push = function push (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var ref = this;
-      var fromRoute = ref.current;
+      let ref = this;
+      let fromRoute = ref.current;
       this.transitionTo(location, function (route) {
         pushState(cleanPath(this$1.base + route.fullPath));
         handleScroll(this$1.router, route, fromRoute, false);
@@ -2192,10 +2192,10 @@
     };
   
     HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var ref = this;
-      var fromRoute = ref.current;
+      let ref = this;
+      let fromRoute = ref.current;
       this.transitionTo(location, function (route) {
         replaceState(cleanPath(this$1.base + route.fullPath));
         handleScroll(this$1.router, route, fromRoute, false);
@@ -2205,7 +2205,7 @@
   
     HTML5History.prototype.ensureURL = function ensureURL (push) {
       if (getLocation(this.base) !== this.current.fullPath) {
-        var current = cleanPath(this.base + this.current.fullPath);
+        let current = cleanPath(this.base + this.current.fullPath);
         push ? pushState(current) : replaceState(current);
       }
     };
@@ -2218,7 +2218,7 @@
   }(History));
   
   function getLocation (base) {
-    var path = window.location.pathname;
+    let path = window.location.pathname;
     if (base && path.indexOf(base) === 0) {
       path = path.slice(base.length);
     }
@@ -2228,7 +2228,7 @@
   /*  */
   
   
-  var HashHistory = (function (History$$1) {
+  let HashHistory = (function (History$$1) {
     function HashHistory (router, base, fallback) {
       History$$1.call(this, router, base);
       // check history fallback deeplinking
@@ -2245,18 +2245,18 @@
     // this is delayed until the app mounts
     // to avoid the hashchange listener being fired too early
     HashHistory.prototype.setupListeners = function setupListeners () {
-      var this$1 = this;
+      let this$1 = this;
   
-      var router = this.router;
-      var expectScroll = router.options.scrollBehavior;
-      var supportsScroll = supportsPushState && expectScroll;
+      let router = this.router;
+      let expectScroll = router.options.scrollBehavior;
+      let supportsScroll = supportsPushState && expectScroll;
   
       if (supportsScroll) {
         setupScroll();
       }
   
       window.addEventListener(supportsPushState ? 'popstate' : 'hashchange', function () {
-        var current = this$1.current;
+        let current = this$1.current;
         if (!ensureSlash()) {
           return
         }
@@ -2272,10 +2272,10 @@
     };
   
     HashHistory.prototype.push = function push (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var ref = this;
-      var fromRoute = ref.current;
+      let ref = this;
+      let fromRoute = ref.current;
       this.transitionTo(location, function (route) {
         pushHash(route.fullPath);
         handleScroll(this$1.router, route, fromRoute, false);
@@ -2284,10 +2284,10 @@
     };
   
     HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var ref = this;
-      var fromRoute = ref.current;
+      let ref = this;
+      let fromRoute = ref.current;
       this.transitionTo(location, function (route) {
         replaceHash(route.fullPath);
         handleScroll(this$1.router, route, fromRoute, false);
@@ -2300,7 +2300,7 @@
     };
   
     HashHistory.prototype.ensureURL = function ensureURL (push) {
-      var current = this.current.fullPath;
+      let current = this.current.fullPath;
       if (getHash() !== current) {
         push ? pushHash(current) : replaceHash(current);
       }
@@ -2314,7 +2314,7 @@
   }(History));
   
   function checkFallback (base) {
-    var location = getLocation(base);
+    let location = getLocation(base);
     if (!/^\/#/.test(location)) {
       window.location.replace(
         cleanPath(base + '/#' + location)
@@ -2324,7 +2324,7 @@
   }
   
   function ensureSlash () {
-    var path = getHash();
+    let path = getHash();
     if (path.charAt(0) === '/') {
       return true
     }
@@ -2335,15 +2335,15 @@
   function getHash () {
     // We can't use window.location.hash here because it's not
     // consistent across browsers - Firefox will pre-decode it!
-    var href = window.location.href;
-    var index = href.indexOf('#');
+    let href = window.location.href;
+    let index = href.indexOf('#');
     return index === -1 ? '' : href.slice(index + 1)
   }
   
   function getUrl (path) {
-    var href = window.location.href;
-    var i = href.indexOf('#');
-    var base = i >= 0 ? href.slice(0, i) : href;
+    let href = window.location.href;
+    let i = href.indexOf('#');
+    let base = i >= 0 ? href.slice(0, i) : href;
     return (base + "#" + path)
   }
   
@@ -2366,7 +2366,7 @@
   /*  */
   
   
-  var AbstractHistory = (function (History$$1) {
+  let AbstractHistory = (function (History$$1) {
     function AbstractHistory (router, base) {
       History$$1.call(this, router, base);
       this.stack = [];
@@ -2378,7 +2378,7 @@
     AbstractHistory.prototype.constructor = AbstractHistory;
   
     AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
       this.transitionTo(location, function (route) {
         this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
@@ -2388,7 +2388,7 @@
     };
   
     AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-      var this$1 = this;
+      let this$1 = this;
   
       this.transitionTo(location, function (route) {
         this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
@@ -2397,13 +2397,13 @@
     };
   
     AbstractHistory.prototype.go = function go (n) {
-      var this$1 = this;
+      let this$1 = this;
   
-      var targetIndex = this.index + n;
+      let targetIndex = this.index + n;
       if (targetIndex < 0 || targetIndex >= this.stack.length) {
         return
       }
-      var route = this.stack[targetIndex];
+      let route = this.stack[targetIndex];
       this.confirmTransition(route, function () {
         this$1.index = targetIndex;
         this$1.updateRoute(route);
@@ -2411,7 +2411,7 @@
     };
   
     AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-      var current = this.stack[this.stack.length - 1];
+      let current = this.stack[this.stack.length - 1];
       return current ? current.fullPath : '/'
     };
   
@@ -2424,7 +2424,7 @@
   
   /*  */
   
-  var VueRouter = function VueRouter (options) {
+  let VueRouter = function VueRouter (options) {
     if ( options === void 0 ) options = {};
   
     this.app = null;
@@ -2435,7 +2435,7 @@
     this.afterHooks = [];
     this.matcher = createMatcher(options.routes || [], this);
   
-    var mode = options.mode || 'hash';
+    let mode = options.mode || 'hash';
     this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
     if (this.fallback) {
       mode = 'hash';
@@ -2462,7 +2462,7 @@
     }
   };
   
-  var prototypeAccessors = { currentRoute: { configurable: true } };
+  let prototypeAccessors = { currentRoute: { configurable: true } };
   
   VueRouter.prototype.match = function match (
     raw,
@@ -2477,7 +2477,7 @@
   };
   
   VueRouter.prototype.init = function init (app /* Vue component instance */) {
-      var this$1 = this;
+      let this$1 = this;
   
     "development" !== 'production' && assert(
       install.installed,
@@ -2494,12 +2494,12 @@
   
     this.app = app;
   
-    var history = this.history;
+    let history = this.history;
   
     if (history instanceof HTML5History) {
       history.transitionTo(history.getCurrentLocation());
     } else if (history instanceof HashHistory) {
-      var setupHashListener = function () {
+      let setupHashListener = function () {
         history.setupListeners();
       };
       history.transitionTo(
@@ -2557,7 +2557,7 @@
   };
   
   VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
-    var route = to
+    let route = to
       ? to.matched
         ? to
         : this.resolve(to).route
@@ -2577,16 +2577,16 @@
     current,
     append
   ) {
-    var location = normalizeLocation(
+    let location = normalizeLocation(
       to,
       current || this.history.current,
       append,
       this
     );
-    var route = this.match(location, current);
-    var fullPath = route.redirectedFrom || route.fullPath;
-    var base = this.history.base;
-    var href = createHref(base, fullPath, this.mode);
+    let route = this.match(location, current);
+    let fullPath = route.redirectedFrom || route.fullPath;
+    let base = this.history.base;
+    let href = createHref(base, fullPath, this.mode);
     return {
       location: location,
       route: route,
@@ -2609,13 +2609,13 @@
   function registerHook (list, fn) {
     list.push(fn);
     return function () {
-      var i = list.indexOf(fn);
+      let i = list.indexOf(fn);
       if (i > -1) { list.splice(i, 1); }
     }
   }
   
   function createHref (base, fullPath, mode) {
-    var path = mode === 'hash' ? '#' + fullPath : fullPath;
+    let path = mode === 'hash' ? '#' + fullPath : fullPath;
     return base ? cleanPath(base + '/' + path) : path
   }
   

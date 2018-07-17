@@ -1,3 +1,6 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 // see http://vuejs-templates.github.io/webpack for documentation.
 let path = require('path')
 //let baseUrl = 'http://192.168.0.109:5555';

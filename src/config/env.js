@@ -1,4 +1,7 @@
 /**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
+/**
  * 配置编译环境和线上环境之间的切换
  *
  * baseUrl: 老项目域名地址

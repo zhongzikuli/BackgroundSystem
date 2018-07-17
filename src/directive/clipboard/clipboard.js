@@ -1,3 +1,6 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 // Inspired by https://github.com/Inndy/vue-clipboard2
 const Clipboard = require('clipboard')
 if (!Clipboard) {

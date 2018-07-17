@@ -1,3 +1,6 @@
+/**
+ * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
+ */
 require('./check-versions')()// 首先检查node和npm的版本
 // 获取配置文件中默认的配置
 let config = require('../config')
