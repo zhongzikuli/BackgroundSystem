@@ -1,25 +1,24 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
     <el-row>
       <el-col :span="6" style='margin-top:15px;'>
+        <el-input
+          placeholder="请输入客户姓名、IMEI号码"
+          v-model="filterText">
+        </el-input>
         <el-tree
+          ref="mapTree"
           class="filter-tree"
           :data="treeData"
           node-key="id"
-          highlight-current
           :props="defaultProps"
           :filter-node-method="filterNode"
           @node-click="getNodeData"
-          @node-expand="getNodeData"
+          @node-expand="getNodeDataExpand"
           :default-expand-all="defaultExpandAll"
           :highlight-current="highLightCurrent"
+          :expand-on-click-node="false"
         >
-          <span slot-scope="{ node, data }">
-              <span>{{ node.label }}</span>
-              <span>
-                ({{data.normalGpsNum}}/{{data.dropsGpsNum}})
-              </span>
-          </span>
         </el-tree>
       </el-col>
       <el-col :span="18">
@@ -32,7 +31,7 @@
 
 <script>
   import AMap from 'AMap'
-  import {fetchDeptTree} from '@/api/location/supervise'
+  import {fetchDeptTree,getGpsServiceOnDept} from '@/api/location/supervise'
 
   export default {
     name: "locationSupervise",
@@ -40,18 +39,20 @@
       return {
         mapObj: null,
         listQuery: {
-          searchKey: undefined
+          status: null
         },
         treeData: [],
         defaultProps: {
           children: 'children',
-          label: 'name'
+          label: 'name',
+          isLeaf: 'isLeaf'
         },
         timer: null,
         fullHeight: document.documentElement.clientHeight - 180,
-        defaultExpandAll: false,
+        defaultExpandAll: true,
         expandOnClickNode: false,
-        highLightCurrent : true
+        highLightCurrent : true,
+        filterText: ''
       }
     },
     methods: {
@@ -61,10 +62,72 @@
         })
       },
       filterNode(value, data) {
-
+        if (!value) return true;
+        return data.name.indexOf(value) !== -1;
       },
-      getNodeData(data) {
-        console.log(data.id)
+      getNodeDataExpand(data){
+        let _self = this;
+        getGpsServiceOnDept(data.id).then(response => {
+          let rData = response.data;
+          if (rData && rData.length > 0){
+            //递归查找到children,然后设置数据
+            _self.findAndSetChildren(data.id,rData,_self.treeData);
+          }
+        })
+      },
+      getNodeData(data,node) {
+        let $node = node;
+        if(data.isShow === 0){
+          return;
+        }
+        if ($node.expanded) {
+          $node.expanded = false;
+          return;
+        }
+
+        let _self = this;
+        getGpsServiceOnDept(data.id).then(response => {
+          let rData = response.data;
+          if (rData && rData.length > 0){
+            //递归查找到children,然后设置数据
+            _self.findAndSetChildren(data.id,rData,_self.treeData);
+            return $node;
+          }
+        }).then($node=>{
+          $node.expanded = true;
+        })
+      },
+      findAndSetChildren(id,data,treeData) {
+        const _id = id;
+        const _data = data;
+        const _treeData = treeData;
+        for (let i = 0; i < _treeData.length; i ++){
+          if (_treeData[i]['id'] === _id){
+            if (_treeData[i]["children"] && _treeData[i]["children"].length > 0) {
+              let _temChildren = _treeData[i]["children"];
+
+                let flag = true;
+                for (let k = 0; k < _data.length; k++){
+                  for (let j = 0; j < _temChildren.length; j++){
+                    if (_data[k]["id"] === _temChildren[j]["id"]){
+                      _treeData[i]["children"].splice(j,1,_data[k]);
+                      flag = false;
+                      break;
+                    }
+                  }
+                  if (flag) {
+                    _treeData[i]["children"].push(_data[k]);
+                    flag = true;
+                  }
+                }
+            }else {
+              _treeData[i]["children"] = _data;
+            }
+            return 0;
+          }else {
+             return this.findAndSetChildren(_id,_data,_treeData[i]["children"]);
+          }
+        }
       }
     },
     created() {
@@ -105,6 +168,9 @@
             that.timer = false;
           }, 400)
         }
+      },
+      filterText(val) {
+        this.$refs.mapTree.filter(val);
       }
     },
     activated() {
@@ -122,7 +188,7 @@
   #mapContainer {
     min-height: 400px;
   }
-
+  /*隐藏高德地图左下角的LOGO*/
   .amap-logo {
     display: none !important;
   }

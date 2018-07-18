@@ -2,6 +2,7 @@
  * Created by zhongzikuli <hgb102xlg@126.com> on 18/6/10.
  */
 
+
 export const isvalidUsername = str => {
   const valid_map = ['admin', 'editor']
   return valid_map.indexOf(str.trim()) >= 0

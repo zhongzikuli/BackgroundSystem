@@ -50,20 +50,20 @@ export default [{
     path: 'menu',
     name: '菜单管理',
     component: _import('admin/menu/index', 'views')
-  },{
+  }, {
     path: 'role',
     name: '角色管理',
     component: _import('admin/role/index', 'views')
-  },{
+  }, {
     path: 'dept',
     name: '部门管理',
     component: _import('admin/dept/index', 'views')
-  },{
+  }, {
     path: 'dict',
     name: '字典管理',
     component: _import('admin/dict/index', 'views')
   }]
-},{
+}, {
   path: '/position',
   component: Layout,
   redirect: '/position/supervise',
@@ -75,7 +75,19 @@ export default [{
     },
     component: _import('location/supervise/index', 'views')
   }]
-},{
+}, {
+  path: '/home',
+  component: Layout,
+  redirect: '/home/index',
+  children: [{
+    path: 'index',
+    name: '设备统计',
+    meta: {
+      keepAlive: true
+    },
+    component: _import('home/index', 'views')
+  }]
+}, {
   path: '/device',
   component: Layout,
   redirect: '/device/gps',

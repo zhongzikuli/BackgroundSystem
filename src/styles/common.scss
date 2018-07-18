@@ -159,7 +159,6 @@ table {
 
 .pull-right {
   float: right !important;
-  ;
 }
 
 .pull-left {
@@ -225,3 +224,14 @@ table {
   padding: 20px;
   box-sizing: border-box;
 }
+
+/**分页**/
+.pagination {
+  padding: 1em 0;
+}
+
+/**弹框**/
+// .el-dialog__body {
+//   max-height: calc(85vh - 260px);
+//   overflow-y: auto;
+// }

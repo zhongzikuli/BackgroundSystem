@@ -47,36 +47,29 @@
     height: 100%;
     background: #fff;
     overflow: hidden;
+    .left {
+      width: 230px;
+      overflow-y: auto;
+    }
+    .right {
+      padding-top: 107px;
+      position: relative;
+      flex: 1;
+    }
+    .main {
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+    .top {
+      margin-bottom: 2px;
+      display: flex;
+    }
   }
-
-  .left {
-    width: 230px;
-    overflow-y: auto;
-  }
-
-  .right {
-    padding-top: 107px;
-    position: relative;
-    flex: 1;
-  }
-
-  .main {
-    height: 100%;
-    overflow-y: scroll;
-  }
-
-  .nav {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-  }
-
-  .top {
-    margin-bottom: 2px;
-    display: flex;
-  }
-
-
 </style>

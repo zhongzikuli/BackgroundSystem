@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
     <el-row>
       <el-col :span="12">
         <div class="grid-content bg-purple">

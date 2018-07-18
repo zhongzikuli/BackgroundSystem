@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
     <div class="filter-container">
       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名"
                 v-model="listQuery.username">
@@ -27,7 +27,7 @@
         </template>
       </el-table-column>
 
-     <el-table-column align="center" label="角色">
+      <el-table-column align="center" label="角色">
         <template slot-scope="scope">
           <span>{{scope.row.roleDesc}}</span>
         </template>
@@ -115,7 +115,7 @@
 <script>
   import {fetchList, getObj, addObj, putObj, delObj} from "@/api/user";
   import {deptRoleList, fetchDeptTree} from "@/api/role";
-  import waves from "@/directive/waves/index.js"; // 水波纹指令
+  import waves from "@/directive/waves"; // 水波纹指令
   import {mapGetters} from "vuex";
   import ElRadioGroup from "element-ui/packages/radio/src/radio-group";
   import ElOption from "element-ui/packages/select/src/option";
@@ -154,10 +154,10 @@
         },
         rules: {
           userName: [{
-              required: true,
-              message: "请输入账户",
-              trigger: "blur"
-            },
+            required: true,
+            message: "请输入账户",
+            trigger: "blur"
+          },
             {
               min: 3,
               max: 20,
